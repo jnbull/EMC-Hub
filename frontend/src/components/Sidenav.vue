@@ -38,6 +38,18 @@ export default {
 
 <style scoped>
 
+nav{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 1;
+    top: 65px;
+    left: 0;
+    width: 65px;
+    bottom: 0;
+    background-color: #34495e;
+}
+
 .sideNavButton{
     cursor: pointer;
     display: flex;

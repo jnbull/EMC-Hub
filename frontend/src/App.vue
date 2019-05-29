@@ -2,12 +2,12 @@
   <div id="app">
 
     <!-- Top Navigation Bar -->
-    <div class = 'topNav'>
+    <div>
       <Topnav/>
     </div>
 
     <!-- Side Navigation Bar -->
-    <div class = 'sideNav'>
+    <div>
       <Sidenav/>
     </div>
 
@@ -44,30 +44,6 @@ export default {
 body{
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
-}
-
-.topNav{
-  display: flex;
-  align-items: center;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  height: 65px;
-  background-color: white;
-  box-shadow: 0 2px 2px -1px rgba(0,0,0,.2);
-}
-
-.sideNav{
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  z-index: 1;
-  top: 65px;
-  left: 0;
-  width: 65px;
-  bottom: 0;
-  background-color: #34495e;
 }
 
 .sectionContainer{
