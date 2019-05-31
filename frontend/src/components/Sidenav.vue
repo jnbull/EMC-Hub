@@ -3,28 +3,28 @@
     <nav>
         <!-- Report Section Link -->
         <router-link to = '/reports'>
-            <div id = 'reportIcon' class = 'sideNavButton'>
-                <font-awesome-icon icon = 'file-alt'/>
+            <div class = 'sideNavButton'>
+                <i><font-awesome-icon icon = 'file-alt'/></i>
             </div>
         </router-link>
 
         <!-- Verifications Section Link -->
         <router-link to = '/verifications'>
-            <div id = 'verificationIcon' class = 'sideNavButton'>
-                <font-awesome-icon icon = 'clipboard-check'/>
+            <div class = 'sideNavButton'>
+                <i><font-awesome-icon icon = 'clipboard-check'/></i>
             </div>
         </router-link>
 
         <!-- Environmental Conditions Section Link -->
         <router-link to = '/environmental'>
             <div class = 'sideNavButton'>
-                <font-awesome-icon icon = 'thermometer-half'/>
+                <i><font-awesome-icon icon = 'thermometer-half'/></i>
             </div>
         </router-link>
 
         <!-- Open Side Nav Button -->
         <div class = 'sideNavButton openSideNav'>
-            <font-awesome-icon icon = 'angle-right'/>
+            <i><font-awesome-icon icon = 'angle-right'/></i>
         </div>
     </nav>
 
@@ -65,6 +65,14 @@ nav{
 .openSideNav{
     margin-top: auto;
     border-top: solid 2px #2c3e50;
+}
+
+.sideNavButton i{
+    transition: transform .2s;
+}
+
+.sideNavButton i:hover{
+    transform: scale(1.1);
 }
 
 </style>

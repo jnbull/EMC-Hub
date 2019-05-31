@@ -12,8 +12,10 @@
     </div>
 
     <!-- Page View -->
-    <div class = 'sectionContainer'>
-      <router-view></router-view>
+    <div>
+      <transition name = 'show'>
+        <router-view></router-view>
+      </transition>
     </div>
     
   </div>
@@ -34,31 +36,44 @@ export default {
 </script>
 
 <style>
+
+@import url('https://fonts.googleapis.com/css?family=Oswald|Roboto&display=swap');
   
 *{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 body{
-  font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
+  background-color: #ececec;
 }
 
-.sectionContainer{
+hr{
+  width: 100%;
+  opacity: 0.2;
+}
+
+ul{
+  padding-left: 20px;
+}
+
+a{
+  text-decoration: none;
+}
+
+.show-enter-active{
   transition: opacity 0.5s linear; 
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  grid-template-columns: repeat(8, 1fr);
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
-  padding: 40px;
-  position: fixed;
-  top: 65px;
-  left: 65px;
-  right: 0;
-  bottom: 0;
+}
+
+.show-leave-active{
+  transition: opacity 0.01s linear;
+}
+
+.show-enter, .show-leave{
+  opacity: 0;
 }
 
 </style>
