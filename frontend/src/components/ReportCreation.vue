@@ -43,7 +43,16 @@
 
 <script>
 export default {
-    name: 'ReportCreation'
+    name: 'ReportCreation',
+    data() {
+        return{
+            title: 'EMC Report',
+            user: {
+                firstName: 'John',
+                lastName: 'Doe'
+            }
+        }
+    }
 }
 </script>
 
