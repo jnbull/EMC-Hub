@@ -3,9 +3,9 @@
     <div class = 'sectionContainer'>
 
         <!-- Create Report Button -->
-        <div class = 'colContainer plusIconContainer'>
+        <router-link to='/reports/create' class = 'colContainer plusIconContainer'>
             <i><font-awesome-icon icon = 'plus' class = 'plusIcon'/></i>
-        </div>
+        </router-link>
 
         <!-- Report Widget 1 -->
         <div class = 'colContainer widgetOne'>
@@ -75,11 +75,16 @@ export default {
     cursor: pointer;
     background-color: #3bb78f;
     background-image: linear-gradient(315deg, #3bb78f 0%, #0bab64 74%);
+    transition: transform .2s;
 }
 
 .plusIcon{
     font-size: 48pt;
     color: whitesmoke;
+}
+
+.plusIconContainer:hover{
+    transform: scale(1.05);
 }
 
 .widgetOne{
