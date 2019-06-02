@@ -76,11 +76,15 @@ a{
   opacity: 0;
 }
 
- input:focus,
-  select:focus,
-  textarea:focus,
-  button:focus {
-      outline: none;
-  }
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+button:hover{
+  transform: scale(1.05);
+}
 
 </style>

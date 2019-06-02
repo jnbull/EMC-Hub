@@ -97,10 +97,6 @@ export default {
         transition: transform .2s;
     }
 
-    button:hover{
-        transform: scale(1.05);
-    }
-
     .optionOne{
         grid-column-start: 1;
         grid-column-end : 2;

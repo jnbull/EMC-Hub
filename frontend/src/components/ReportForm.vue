@@ -1,38 +1,96 @@
 <template>
-        <!-- EMC Report Creation Form -->
-        <form @submit = 'formSubmit' autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
-        <!-- {{ reportForm.hidden_tag() }} -->
+    <!-- EMC Report Creation Form -->
+    <form @submit = 'formSubmit' autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
+    <!-- {{ reportForm.hidden_tag() }} -->
 
-            <!-- Step 1 - Project Information -->
-            <div class = 'colContainer'>
+        <!-- Step 1 - Project Information -->
+        <div class = 'colContainer'>
 
-                <!-- Subtitle -->
-                <div class = 'subtitle'>
-                    Project Information
-                </div>
-                <hr>
-
-                <!-- Form Layout Tab -->
-                <div class = 'formContainer'>
-
-                    <!-- Form Content -->
-                    <div class = 'formContentContainer'>
-                        <label for="productName">Product Name</label>
-                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
-
-                        <label for="companyName">Company Name</label>
-                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
-
-                        <label for="data">Data Location</label>
-                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
-
-
-                        <button>Submit</button>
-
-                    </div>
-                </div>
+            <!-- Subtitle -->
+            <div class = 'subtitle'>
+                Project Information
             </div>
-        </form>
+            <hr>
+
+            <!-- Form Layout Tab -->
+            <div class = 'formContainer'>
+
+                <!-- Form Content -->
+                <div v-if = 'windows[0].show' class = 'formContentContainer'>
+                    <p>
+                        <label class = 'formLabel' for="productName">Product Name</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                    </p>
+                </div>
+
+                 <div v-if = 'windows[1].show' class = 'formContentContainer'>
+                    <p>
+                        <label class = 'formLabel' for="productName">PAge2</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                    </p>
+                </div>
+
+                 <div v-if = 'windows[2].show' class = 'formContentContainer'>
+                    <p>
+                        <label class = 'formLabel' for="productName">Page3</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                    </p>
+                </div>
+
+                <!-- Form Navigation -->
+                <div class = 'navButtonContainer'>
+                    <button type = 'button' v-on:click = "nextPrev(-1)">Previous</button>
+                    <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
+                    <button v-if = 'buttonSubmit'>Submit</button>
+                </div>
+
+                <!-- Form Step Bubbles -->
+                <div class = 'stepContainer'>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                    <span class="step"></span>
+                </div>
+
+            </div>
+
+            <div id = 'loadingScreen' class = 'formContainer'>
+                <span id = 'loadingOne' class="loading"></span>
+                <span id = 'loadingTwo' class="loading"></span>
+                <span id = 'loadingThree' class="loading"></span>
+            </div>
+
+        </div>
+    </form>
 </template>
 
 <script>
@@ -53,11 +111,43 @@ export default {
                 // standard: '',
                 // class_:'',
                 // setup: ;
-            }
+            },
+            currentWindow: 0,
+            buttonSubmit: false,
+            buttonNext: true,
+            windows: [
+                {
+                    id: 0,
+                    buttonPrevious: false,
+                    show: true
+                },
+                {
+                    id: 1,
+                    buttonPrevious: true,
+                    show: false
+                },
+                {
+                    id: 2,
+                    buttonPrevious: true,
+                    show:false
+                },
+            ]
             
         }
     },
     methods: {
+        nextPrev(n){
+            this.windows[this.currentWindow].show = false;
+            this.currentWindow += n;
+            this.windows[this.currentWindow].show = true;
+            console.log(this.currentWindow)
+            console.log(this.windows.length)
+            if (this.currentWindow == this.windows.length - 1){
+                this.buttonNext = false;
+                this.buttonSubmit = true;
+            }
+            
+        },
         formSubmit(e){
             e.preventDefault();
             axios.post('http://localhost:5000/submit/report', {productName: this.formData.productName, companyName: this.formData.companyName, data: this.formData.data})
@@ -68,12 +158,14 @@ export default {
             //     console.log(err)
             // })
         }
+
     }
 }
 </script>
 
 <style scoped>
- .sectionContainer{
+
+.sectionContainer{
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
@@ -121,6 +213,7 @@ export default {
 
 .formContentContainer{
     display: flex;
+    flex-direction: column;
     padding: 20px 0px;
     width: 100%;
     align-self: flex-start;
@@ -141,6 +234,7 @@ export default {
 
 .navButtonContainer{
     align-self: flex-end;
+    /* margin-top: auto; */
 }
 
 button{
@@ -153,6 +247,7 @@ button{
     font-size: 12pt;
     text-align: center;
     cursor: pointer;
+    transition: transform .2s;
 }
 
 
