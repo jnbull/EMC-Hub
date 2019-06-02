@@ -69,7 +69,7 @@
 
                 <!-- Form Navigation -->
                 <div class = 'navButtonContainer'>
-                    <button type = 'button' v-on:click = "nextPrev(-1)">Previous</button>
+                    <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
                     <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
                     <button v-if = 'buttonSubmit'>Submit</button>
                 </div>
@@ -113,22 +113,20 @@ export default {
                 // setup: ;
             },
             currentWindow: 0,
+            buttonPrevious: false,
             buttonSubmit: false,
             buttonNext: true,
             windows: [
                 {
                     id: 0,
-                    buttonPrevious: false,
                     show: true
                 },
                 {
                     id: 1,
-                    buttonPrevious: true,
                     show: false
                 },
                 {
                     id: 2,
-                    buttonPrevious: true,
                     show:false
                 },
             ]
@@ -142,9 +140,21 @@ export default {
             this.windows[this.currentWindow].show = true;
             console.log(this.currentWindow)
             console.log(this.windows.length)
+
             if (this.currentWindow == this.windows.length - 1){
+                this.buttonPrevious = true;
                 this.buttonNext = false;
                 this.buttonSubmit = true;
+            }
+            else if(this.currentWindow == 0){
+                this.buttonPrevious = false;
+                this.buttonNext = true;
+                this.buttonSubmit = false;
+            }
+            else{
+                this.buttonPrevious = true;
+                this.buttonNext = true;
+                this.buttonSubmit = false;
             }
             
         },
