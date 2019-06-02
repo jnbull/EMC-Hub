@@ -22,8 +22,14 @@
             </div>
         </router-link>
 
+        <!-- Open File Explorer -->
+        <form @submit = 'fileOpen' class = 'sideNavButton bottomButton' method="POST">
+            <button><i><font-awesome-icon icon = 'folder-open'/></i></button>
+        </form>
+        
+
         <!-- Open Side Nav Button -->
-        <div class = 'sideNavButton openSideNav'>
+        <div class = 'sideNavButton'>
             <i><font-awesome-icon icon = 'angle-right'/></i>
         </div>
     </nav>
@@ -31,8 +37,21 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'Sidenav'
+    name: 'Sidenav',
+    // data() {
+    //     return {
+    //         fileOpen = true;
+    //     }
+    // },
+    methods: {
+        fileOpen(e){
+            e.preventDefault()
+            axios.post('http://localhost:5000/submit/fileopen')
+        }
+    }
 }
 </script>
 
@@ -62,7 +81,7 @@ nav{
     font-size: 35px;
 }
 
-.openSideNav{
+.bottomButton{
     margin-top: auto;
     border-top: solid 2px #2c3e50;
 }
