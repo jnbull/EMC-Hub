@@ -35,10 +35,13 @@
 
                  <div v-if = 'windows[1].show' class = 'formContentContainer'>
                     <p>
-                        <label class = 'formLabel' for="productName">PAge2</label>
-                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
-                    </p>
-                    
+                        <label class = 'formLabel' for="standard">Product Standard</label>
+                        <select v-model = 'standard'>
+                            <option value = "" selected disabled> Select... </option>
+                            <option value = "CISPR 11">CISPR 11</option>
+                            <option value = "CISPR 32">CISPR 32</option>
+                            <option value = "FCC">FCC</option>
+                        </select>
                     <p>
                         <label class = 'formLabel' for="companyName">Company Name</label>
                         <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
@@ -71,14 +74,14 @@
                 <div class = 'navButtonContainer'>
                     <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
                     <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
-                    <button v-if = 'buttonSubmit'>Submit</button>
+                    <router-link to = '/reports/success'><button v-if = 'buttonSubmit'>Submit</button></router-link>
                 </div>
 
                 <!-- Form Step Bubbles -->
                 <div class = 'stepContainer'>
-                    <span class="step"></span>
-                    <span class="step"></span>
-                    <span class="step"></span>
+                    <span v-bind:class = "{active: windows[0].isActive, finish: windows[0].isFinished}" class="step"></span>
+                    <span v-bind:class = "{active: windows[1].isActive, finish: windows[1].isFinished}" class="step"></span>
+                    <span v-bind:class = "{active: windows[2].isActive, finish: windows[2].isFinished}" class="step"></span>
                 </div>
 
             </div>
@@ -112,6 +115,7 @@ export default {
                 // class_:'',
                 // setup: ;
             },
+            standard: "Select...",
             currentWindow: 0,
             buttonPrevious: false,
             buttonSubmit: false,
@@ -119,15 +123,21 @@ export default {
             windows: [
                 {
                     id: 0,
-                    show: true
+                    show: true,
+                    isActive: true,
+                    isFinished: false
                 },
                 {
                     id: 1,
-                    show: false
+                    show: false,
+                    isActive: false,
+                    isFinished: false
                 },
                 {
                     id: 2,
-                    show:false
+                    show:false,
+                    isActive: false,
+                    isFinished: false
                 },
             ]
             
@@ -136,8 +146,11 @@ export default {
     methods: {
         nextPrev(n){
             this.windows[this.currentWindow].show = false;
+            this.windows[this.currentWindow].isFinished = true;
+            this.windows[this.currentWindow].isActive = false;
             this.currentWindow += n;
             this.windows[this.currentWindow].show = true;
+            this.windows[this.currentWindow].isActive = true;
             console.log(this.currentWindow)
             console.log(this.windows.length)
 

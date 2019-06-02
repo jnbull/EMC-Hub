@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import ReportLanding from '@/components/ReportLanding'
 import ReportCreation from '@/components/ReportCreation'
 import ReportForm from '@/components/ReportForm'
+import ReportSuccess from '@/components/ReportSuccess'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/reports/create/report',
       name: 'ReportForm',
       component: ReportForm
+    },
+    {
+      path: '/reports/success',
+      name: 'ReportSuccess',
+      component: ReportSuccess
     }
   ]
 })
