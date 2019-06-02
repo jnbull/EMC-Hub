@@ -1,14 +1,14 @@
 <template>
-
     <!-- EMC Report Creation Form -->
-    <form autocomplete = 'off' id = 'reportForm' class = 'sectionContainer' method = 'POST'>
+    <form @submit = 'formSubmit' autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
+    <!-- {{ reportForm.hidden_tag() }} -->
 
         <!-- Step 1 - Project Information -->
-        <div class = 'colContainer one'>
+        <div class = 'colContainer'>
 
             <!-- Subtitle -->
             <div class = 'subtitle'>
-                <h3 id = 'formTitle'>Project Information</h3>
+                Project Information
             </div>
             <hr>
 
@@ -16,74 +16,62 @@
             <div class = 'formContainer'>
 
                 <!-- Form Content -->
-                <div class = 'formContentContainer'>
-
-                    <!-- Product Name -->
-                    Product Name
-                    <input type = 'text' name = 'productName' class = 'formField'>
-
-                    <!-- Company Name -->
+                <div v-if = 'windows[0].show' class = 'formContentContainer'>
                     <p>
-                        {{ reportForm.companyName.label(class_='formLabel') }}
-                        {{ reportForm.companyName(class_='formField') }}
+                        <label class = 'formLabel' for="productName">Product Name</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
                     </p>
-
-                    <!-- EMC Folder Location -->
+                    
                     <p>
-                        {{ reportForm.dataLocation.label(class_='formLabel') }}
-                        {{ reportForm.dataLocation(class_='formField') }}
+                        <label class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
                     </p>
-
+                    
+                    <p>
+                        <label class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                    </p>
                 </div>
 
-                <div class = 'formContentContainer'>
-
-                    <!-- Product Standard -->
+                 <div v-if = 'windows[1].show' class = 'formContentContainer'>
                     <p>
-                        {{ reportForm.standard.label(class_='formLabel') }}
-                        {{ reportForm.standard(class_='formField') }}
+                        <label class = 'formLabel' for="productName">PAge2</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
                     </p>
-
-                    <!-- Product Class -->
+                    
                     <p>
-                        {{ reportForm.productClass.label(class_='formLabel') }}
-                        {{ reportForm.productClass(class_='formField') }}
+                        <label class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
                     </p>
-
-                    <!-- Input Power -->
+                    
                     <p>
-                        {{ reportForm.power.label(class_='formLabel') }}
-                        {{ reportForm.power(class_='formField') }}
+                        <label class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
                     </p>
-
                 </div>
 
-                <div class = 'formContentContainer'>
-
-                    <!-- Test Setup -->
+                 <div v-if = 'windows[2].show' class = 'formContentContainer'>
                     <p>
-                        {{ reportForm.setup.label(class_='formLabel') }}
-                        {{ reportForm.setup(class_='formField') }}
+                        <label class = 'formLabel' for="productName">Page3</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
                     </p>
-
-                    <!-- Spectrum Analyzer -->
+                    
                     <p>
-                        {{ reportForm.specPLCE.label(class_='formLabel') }}
-                        {{ reportForm.specPLCE(class_='formField') }}
+                        <label class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
                     </p>
-
-                    <!-- LISN -->
+                    
                     <p>
-                        {{ reportForm.lisnPLCE.label(class_='formLabel') }}
-                        {{ reportForm.lisnPLCE(class_='formField') }}
+                        <label class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
                     </p>
-
                 </div>
 
                 <!-- Form Navigation -->
                 <div class = 'navButtonContainer'>
-                    <button type = 'button' id = 'buttonPrevious' onclick = "nextPrev(-1)">Previous</button>
-                    <button type = 'button' id = 'buttonNext' onclick = "nextPrev(1)"></button>
+                    <button type = 'button' v-on:click = "nextPrev(-1)">Previous</button>
+                    <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
+                    <button v-if = 'buttonSubmit'>Submit</button>
                 </div>
 
                 <!-- Form Step Bubbles -->
@@ -106,14 +94,78 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'ReportForm'
+    name: 'ReportForm',
+    data() {
+        return{
+            formData: {
+                productName: "",
+                companyName: "",
+                data: "",
+                // equipment: {
+                //     SpecA: '',
+                //     LISN: ''
+                // },
+                // standard: '',
+                // class_:'',
+                // setup: ;
+            },
+            currentWindow: 0,
+            buttonSubmit: false,
+            buttonNext: true,
+            windows: [
+                {
+                    id: 0,
+                    buttonPrevious: false,
+                    show: true
+                },
+                {
+                    id: 1,
+                    buttonPrevious: true,
+                    show: false
+                },
+                {
+                    id: 2,
+                    buttonPrevious: true,
+                    show:false
+                },
+            ]
+            
+        }
+    },
+    methods: {
+        nextPrev(n){
+            this.windows[this.currentWindow].show = false;
+            this.currentWindow += n;
+            this.windows[this.currentWindow].show = true;
+            console.log(this.currentWindow)
+            console.log(this.windows.length)
+            if (this.currentWindow == this.windows.length - 1){
+                this.buttonNext = false;
+                this.buttonSubmit = true;
+            }
+            
+        },
+        formSubmit(e){
+            e.preventDefault();
+            axios.post('http://localhost:5000/submit/report', {productName: this.formData.productName, companyName: this.formData.companyName, data: this.formData.data})
+            // .then(res => {
+            //     this.productName = ''
+            // })
+            // .catch(err => {
+            //     console.log(err)
+            // })
+        }
+
+    }
 }
 </script>
 
 <style scoped>
 
- .sectionContainer{
+.sectionContainer{
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
@@ -160,7 +212,8 @@ export default {
 }
 
 .formContentContainer{
-    display: none;
+    display: flex;
+    flex-direction: column;
     padding: 20px 0px;
     width: 100%;
     align-self: flex-start;
@@ -181,6 +234,7 @@ export default {
 
 .navButtonContainer{
     align-self: flex-end;
+    /* margin-top: auto; */
 }
 
 button{
@@ -193,6 +247,7 @@ button{
     font-size: 12pt;
     text-align: center;
     cursor: pointer;
+    transition: transform .2s;
 }
 
 
