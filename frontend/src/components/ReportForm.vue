@@ -1,6 +1,6 @@
 <template>
         <!-- EMC Report Creation Form -->
-        <form autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
+        <form @submit = 'formSubmit' autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
         <!-- {{ reportForm.hidden_tag() }} -->
 
             <!-- Step 1 - Project Information -->
@@ -17,100 +17,58 @@
 
                     <!-- Form Content -->
                     <div class = 'formContentContainer'>
+                        <label for="productName">Product Name</label>
+                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
 
-                        <!-- Product Name -->
-                        <p>
-                            <!-- {{ reportForm.productName.label(class_='formLabel') }}
-                            {{ reportForm.productName(class_='formField') }} -->
-                        </p>
+                        <label for="companyName">Company Name</label>
+                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
 
-                        <!-- Company Name -->
-                        <p>
-                            <!-- {{ reportForm.companyName.label(class_='formLabel') }}
-                            {{ reportForm.companyName(class_='formField') }} -->
-                        </p>
+                        <label for="data">Data Location</label>
+                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
 
-                        <!-- EMC Folder Location -->
-                        <p>
-                            <!-- {{ reportForm.dataLocation.label(class_='formLabel') }}
-                            {{ reportForm.dataLocation(class_='formField') }} -->
-                        </p>
+
+                        <button>Submit</button>
 
                     </div>
-
-                    <div class = 'formContentContainer'>
-
-                        <!-- Product Standard -->
-                        <p>
-                            <!-- {{ reportForm.standard.label(class_='formLabel') }}
-                            {{ reportForm.standard(class_='formField') }} -->
-                        </p>
-
-                        <!-- Product Class -->
-                        <p>
-                            <!-- {{ reportForm.productClass.label(class_='formLabel') }}
-                            {{ reportForm.productClass(class_='formField') }} -->
-                        </p>
-
-                        <!-- Input Power -->
-                        <p>
-                            <!-- {{ reportForm.power.label(class_='formLabel') }}
-                            {{ reportForm.power(class_='formField') }} -->
-                        </p>
-
-                    </div>
-
-                    <div class = 'formContentContainer'>
-
-                        <!-- Test Setup -->
-                        <p>
-                            <!-- {{ reportForm.setup.label(class_='formLabel') }}
-                            {{ reportForm.setup(class_='formField') }} -->
-                        </p>
-
-                        <!-- Spectrum Analyzer -->
-                        <p>
-                            <!-- {{ reportForm.specPLCE.label(class_='formLabel') }}
-                            {{ reportForm.specPLCE(class_='formField') }} -->
-                        </p>
-
-                        <!-- LISN -->
-                        <p>
-                            <!-- {{ reportForm.lisnPLCE.label(class_='formLabel') }}
-                            {{ reportForm.lisnPLCE(class_='formField') }} -->
-                        </p>
-
-                    </div>
-
-                    <!-- Form Navigation -->
-                    <div class = 'navButtonContainer'>
-                        <button type = 'button' id = 'buttonPrevious' onclick = "nextPrev(-1)">Previous</button>
-                        <button type = 'button' id = 'buttonNext' onclick = "nextPrev(1)"></button>
-                    </div>
-
-                    <!-- Form Step Bubbles -->
-                    <div class = 'stepContainer'>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                    </div>
-
                 </div>
-
-                <div id = 'loadingScreen' class = 'formContainer'>
-                    <span id = 'loadingOne' class="loading"></span>
-                    <span id = 'loadingTwo' class="loading"></span>
-                    <span id = 'loadingThree' class="loading"></span>
-                </div>
-
             </div>
         </form>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'ReportForm',
-    delimiters: ['[[',']]']
+    data() {
+        return{
+            formData: {
+                productName: "",
+                companyName: "",
+                data: "",
+                // equipment: {
+                //     SpecA: '',
+                //     LISN: ''
+                // },
+                // standard: '',
+                // class_:'',
+                // setup: ;
+            }
+            
+        }
+    },
+    methods: {
+        formSubmit(e){
+            e.preventDefault();
+            axios.post('http://localhost:5000/submit/report', {productName: this.formData.productName, companyName: this.formData.companyName, data: this.formData.data})
+            // .then(res => {
+            //     this.productName = ''
+            // })
+            // .catch(err => {
+            //     console.log(err)
+            // })
+        }
+    }
 }
 </script>
 
@@ -162,7 +120,7 @@ export default {
 }
 
 .formContentContainer{
-    display: none;
+    display: flex;
     padding: 20px 0px;
     width: 100%;
     align-self: flex-start;
