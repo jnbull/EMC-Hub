@@ -76,4 +76,11 @@ a{
   opacity: 0;
 }
 
+ input:focus,
+  select:focus,
+  textarea:focus,
+  button:focus {
+      outline: none;
+  }
+
 </style>
