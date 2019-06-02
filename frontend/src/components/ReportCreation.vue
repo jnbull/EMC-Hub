@@ -43,7 +43,7 @@
 
 <script>
 export default {
-    name: 'ReportCreation'
+    name: 'ReportCreation',
 }
 </script>
 
@@ -95,10 +95,6 @@ export default {
         text-align: center;
         cursor: pointer;
         transition: transform .2s;
-    }
-
-    button:hover{
-        transform: scale(1.05);
     }
 
     .optionOne{
