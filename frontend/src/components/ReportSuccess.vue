@@ -21,17 +21,6 @@
                         <font-awesome-icon icon = 'folder-open' class = 'bigIcon'/>
                         <div class = 'startContainer'>
                             <h3 class = 'startSubtitle'><strong>Open Output Directory</strong></h3>
-                            
-                            <!-- <div class = 'startContent'>
-                                <p>
-                                    View generated reports
-                                </p>
-                                <ul>
-                                    <li>EMC Reports</li>
-                                    <li>Findings Letters</li>
-                                    <li>Prescan Data</li>
-                                </ul>
-                            </div> -->
                         </div>
                     </button>
                 </form>
@@ -41,17 +30,6 @@
                     <font-awesome-icon icon = 'file-alt' class = 'bigIcon'/>
                     <div class = 'startContainer'>
                         <h3 class = 'startSubtitle'><strong>Create Another Report</strong></h3>
-                        
-                        <!-- <div class = 'startContent'>
-                            <p>
-                                Create
-                            </p>
-                            <ul>
-                                <li>Equipment Verification Forms</li>
-                                <li>Test Setup Verification Trends</li>
-                                <li>Verification Procedures</li>
-                            </ul>
-                        </div> -->
                     </div>
                 </router-link>
 
@@ -60,17 +38,6 @@
                     <img class = 'bigLogo' src="../assets/successlogo.svg" alt="TUV Logo">
                     <div class = 'startContainer'>
                         <h3 class = 'startSubtitle'><strong>Return to Home</strong></h3>
-                        
-                        <!-- <div class = 'startContent'>
-                            <p>
-                                Automated Database for Use in:
-                            </p>
-                            <ul>
-                                <li>EMC Reports</li>
-                                <li>Verification Records</li>
-                                <li>Laboratory Regulation</li>
-                            </ul>
-                        </div> -->
                     </div>
                 </router-link>
             </div>

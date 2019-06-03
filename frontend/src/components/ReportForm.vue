@@ -17,39 +17,55 @@
 
                 <!-- Form Content -->
                 <div v-if = 'windows[0].show' class = 'formContentContainer'>
-                    <p>
+                    <div>
                         <label class = 'formLabel' for="productName">Product Name</label>
-                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
-                    </p>
+                        <input v-bind:class = '{invalid: windows[0].validated}' v-model = 'windows[0].formData.productName' class = 'formField' type="text" name = 'productName'>
+                        <p>{{empty}}</p>
+                    </div>
                     
-                    <p>
+                    <div>
                         <label class = 'formLabel' for="companyName">Company Name</label>
-                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
-                    </p>
+                        <input v-bind:class = '{invalid: windows[0].validated}' v-model = 'windows[0].formData.companyName' class = 'formField' type="text" name = 'companyName'>
+                        <p>{{empty}}</p>
+                    </div>
                     
-                    <p>
+                    <div>
                         <label class = 'formLabel' for="data">Data Location</label>
-                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
-                    </p>
+                        <input v-bind:class = '{invalid: windows[0].validated}' v-model = 'windows[0].formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                        <p>{{empty}}</p>
+                    </div>
+
                 </div>
 
                  <div v-if = 'windows[1].show' class = 'formContentContainer'>
                     <p>
                         <label class = 'formLabel' for="standard">Product Standard</label>
-                        <select v-model = 'standard'>
-                            <option value = "" selected disabled> Select... </option>
-                            <option value = "CISPR 11">CISPR 11</option>
-                            <option value = "CISPR 32">CISPR 32</option>
-                            <option value = "FCC">FCC</option>
+            
+                        <select name = 'standard' class = 'customSelect' v-model= "formData.standard">
+                            <option disabled value="">Select: </option>
+                            <option>CISPR 11</option>
+                            <option>CISPR 32</option>
+                            <option>FCC</option>
                         </select>
+                        
                     <p>
-                        <label class = 'formLabel' for="companyName">Company Name</label>
-                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
+                        <label class = 'formLabel' for="class_">Product Class</label>
+
+                        <select name = 'class_' class = 'customSelect' v-model= "formData.class_">
+                            <option disabled value="">Select: </option>
+                            <option>Class A</option>
+                            <option>Class B</option>
+                        </select>
                     </p>
                     
                     <p>
-                        <label class = 'formLabel' for="data">Data Location</label>
-                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                        <label class = 'formLabel' for="power">Input Power</label>
+                        
+                        <select name = 'power' class = 'customSelect' v-model= "formData.power">
+                            <option disabled value="">Select: </option>
+                            <option>Single-Phase</option>
+                            <option>Three-Phase</option>
+                        </select>
                     </p>
                 </div>
 
@@ -104,9 +120,10 @@ export default {
     data() {
         return{
             formData: {
-                productName: "",
-                companyName: "",
-                data: "",
+                
+                standard: "",
+                class_: "",
+                power: "",
                 // equipment: {
                 //     SpecA: '',
                 //     LISN: ''
@@ -115,8 +132,8 @@ export default {
                 // class_:'',
                 // setup: ;
             },
-            standard: "Select...",
             currentWindow: 0,
+            counter: 0,
             buttonPrevious: false,
             buttonSubmit: false,
             buttonNext: true,
@@ -125,52 +142,86 @@ export default {
                     id: 0,
                     show: true,
                     isActive: true,
-                    isFinished: false
+                    isFinished: false,
+                    formData: {
+                        productName: "",
+                        companyName: "",
+                        data: "",
+                    },
+                    invalid: true,
+                    empty: "",
                 },
                 {
                     id: 1,
                     show: false,
                     isActive: false,
-                    isFinished: false
+                    isFinished: false,
+                    invalid: true,
+                    empty: "",
                 },
                 {
                     id: 2,
                     show:false,
                     isActive: false,
-                    isFinished: false
+                    isFinished: false,
+                    invalid: true,
+                    empty: "",
                 },
             ]
             
         }
     },
     methods: {
+        
         nextPrev(n){
-            this.windows[this.currentWindow].show = false;
-            this.windows[this.currentWindow].isFinished = true;
-            this.windows[this.currentWindow].isActive = false;
-            this.currentWindow += n;
-            this.windows[this.currentWindow].show = true;
-            this.windows[this.currentWindow].isActive = true;
-            console.log(this.currentWindow)
-            console.log(this.windows.length)
 
-            if (this.currentWindow == this.windows.length - 1){
-                this.buttonPrevious = true;
-                this.buttonNext = false;
-                this.buttonSubmit = true;
+            for (data in this.windows[this.currentWindow].formData){
+                if (data != ''){
+                    this.counter += 1;
+                    console.log(this.counter);
+                }
             }
-            else if(this.currentWindow == 0){
-                this.buttonPrevious = false;
-                this.buttonNext = true;
-                this.buttonSubmit = false;
+
+            if (this.counter == this.windows[this.currentWindow].formData.length - 1){
+                this.windows[this.currentWindow].invalid = false;
+                console.log(this.windows[this.currentWindow].invalid)
             }
-            else{
-                this.buttonPrevious = true;
-                this.buttonNext = true;
-                this.buttonSubmit = false;
+
+            else {
+                this.windows[this.currentWindow].invalid = true;
+                console.log(this.windows[this.currentWindow].invalid)
             }
-            
+
+            if(this.windows[this.currentWindow].invalid == false){
+                this.windows[this.currentWindow].show = false;
+                this.windows[this.currentWindow].isFinished = true;
+                this.windows[this.currentWindow].isActive = false;
+                this.currentWindow += n;
+                this.windows[this.currentWindow].show = true;
+                this.windows[this.currentWindow].isActive = true;
+
+                if (this.currentWindow == this.windows.length - 1){
+                    this.buttonPrevious = true;
+                    this.buttonNext = false;
+                    this.buttonSubmit = true;
+                }
+                else if(this.currentWindow == 0){
+                    this.buttonPrevious = false;
+                    this.buttonNext = true;
+                    this.buttonSubmit = false;
+                }
+                else{
+                    this.buttonPrevious = true;
+                    this.buttonNext = true;
+                    this.buttonSubmit = false;
+                }
+            }
+
+            else if(this.windows[this.currentWindow].invalid == true){
+                this.windows[this.currentWindow].empty = 'Please fill out this field';
+            }
         },
+
         formSubmit(e){
             e.preventDefault();
             axios.post('http://localhost:5000/submit/report', {productName: this.formData.productName, companyName: this.formData.companyName, data: this.formData.data})
@@ -187,6 +238,26 @@ export default {
 </script>
 
 <style scoped>
+
+@import url('https://fonts.googleapis.com/css?family=Oswald|Roboto&display=swap');
+
+.customSelect{
+    background-color:#34495e;
+    font-family: 'Roboto';
+    color: whitesmoke;
+    width: 150px;
+    height: 39px;
+    font-size: 11pt;
+    border-radius: 5px;
+    box-shadow: 0px 5px 2px -2px rgba(0,0,0,.2);
+    cursor: pointer;
+    transition: transform .2s;
+    text-align: center;
+}
+
+.customSelect:hover{
+    transform: scale(1.05);
+}
 
 .sectionContainer{
     display: grid;
@@ -277,6 +348,10 @@ button{
 .stepContainer{
     text-align: center;
     margin: auto 0px 40px 0px;
+}
+
+.formField.invalid{
+    background-color: #ef4545;
 }
 
 .step{
