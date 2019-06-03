@@ -33,23 +33,37 @@
                     </p>
                 </div>
 
-                 <div v-if = 'windows[1].show' class = 'formContentContainer'>
+                <div v-if = 'windows[1].show' class = 'formContentContainer'>
                     <p>
                         <label class = 'formLabel' for="standard">Product Standard</label>
-                        <select v-model = 'standard'>
-                            <option value = "" selected disabled> Select... </option>
-                            <option value = "CISPR 11">CISPR 11</option>
-                            <option value = "CISPR 32">CISPR 32</option>
-                            <option value = "FCC">FCC</option>
+            
+                        <select name = 'standard' class = 'customSelect' v-model= "formData.standard">
+                            <option disabled value = "">Select:</option>
+                            <option value = '../assets/reports/CISPR11.docx'>CISPR 11</option>
+                            <option value = '../assets/reports/CISPR11-FCC.docx'>CISPR 11 & FCC</option>
+                            <option value = '../assets/reports/CISPR32.docx'>CISPR 32</option>
+                            <option value = '../assets/reports/CISPR32-FCC.docx'>CISPR 32 & FCC</option>
+                            <option value = '../assets/reports/FCC.docx'>FCC</option>
                         </select>
+                        
                     <p>
-                        <label class = 'formLabel' for="companyName">Company Name</label>
-                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
+                        <label class = 'formLabel' for="class_">Product Class</label>
+
+                        <select name = 'class_' class = 'customSelect' v-model= "formData.class_">
+                            <option disabled value="">Select: </option>
+                            <option value = 'Class A'>Class A</option>
+                            <option value = 'Class B'>Class B</option>
+                        </select>
                     </p>
                     
                     <p>
-                        <label class = 'formLabel' for="data">Data Location</label>
-                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
+                        <label class = 'formLabel' for="power">Input Power</label>
+                        
+                        <select name = 'power' class = 'customSelect' v-model= "formData.power">
+                            <option disabled value="">Select: </option>
+                            <option value = 'Single Phase'>Single Phase</option>
+                            <option value = 'Three Phase'>Three Phase</option>
+                        </select>
                     </p>
                 </div>
 
@@ -107,6 +121,9 @@ export default {
                 productName: "",
                 companyName: "",
                 data: "",
+                standard: "",
+                class_: "",
+                power: "",
                 // equipment: {
                 //     SpecA: '',
                 //     LISN: ''
@@ -115,7 +132,6 @@ export default {
                 // class_:'',
                 // setup: ;
             },
-            standard: "Select...",
             currentWindow: 0,
             buttonPrevious: false,
             buttonSubmit: false,
@@ -187,6 +203,24 @@ export default {
 </script>
 
 <style scoped>
+
+.customSelect{
+    background-color:#34495e;
+    font-family: 'Roboto';
+    color: whitesmoke;
+    width: 150px;
+    height: 39px;
+    font-size: 11pt;
+    border-radius: 5px;
+    box-shadow: 0px 5px 2px -2px rgba(0,0,0,.2);
+    cursor: pointer;
+    transition: transform .2s;
+    text-align: center;
+}
+
+.customSelect:hover{
+    transform: scale(1.05);
+}
 
 .sectionContainer{
     display: grid;

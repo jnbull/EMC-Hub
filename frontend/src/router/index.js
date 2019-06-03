@@ -5,6 +5,8 @@ import ReportLanding from '@/components/ReportLanding'
 import ReportCreation from '@/components/ReportCreation'
 import ReportForm from '@/components/ReportForm'
 import ReportSuccess from '@/components/ReportSuccess'
+import VerificationLanding from '@/components/VerificationLanding'
+import VerificationCreation from '@/components/VerificationCreation'
 
 Vue.use(Router)
 
@@ -35,6 +37,16 @@ export default new Router({
       path: '/reports/success',
       name: 'ReportSuccess',
       component: ReportSuccess
+    },
+    {
+      path: '/verifications',
+      name: 'VerificationLanding',
+      component: VerificationLanding
+    },
+    {
+      path: '/verifications/create',
+      name: 'VerificationCreation',
+      component: VerificationCreation
     }
   ]
 })
