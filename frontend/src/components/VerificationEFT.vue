@@ -7,7 +7,7 @@
 
             <!-- Subtitle -->
             <div class = 'subtitle'>
-                EFT Verification
+                {{subtitle}}
             </div>
             <hr>
 
@@ -64,15 +64,17 @@
                         </li>
 
                         <div>
-                            <label class = 'formLabel' for= "peak" >Peak Value</label>
-                            <input v-model = 'formData.peak' class = 'formField' type="text" name = 'peak'>
+                            <input placeholder = 'Peak Value: 1800V - 2200V' v-model = 'formData.peak' class = 'formField' type="text" name = 'peak'>
                         </div>
 
                     </ol>
 
+                    
                     <div class = 'setupPhoto-R'>
                         <img src="../assets/EFT_PK.png" alt="EFT Peak" height= '326.4' width= '435.2'>
                     </div>
+                    
+                    
 
                 </div>
 
@@ -120,6 +122,7 @@ export default {
             formData: {
                 peak: "",
             },
+            subtitle: 'EFT Verification',
             currentWindow: 0,
             buttonPrevious: false,
             buttonSubmit: false,
@@ -129,19 +132,29 @@ export default {
                     id: 0,
                     show: true,
                     isActive: true,
-                    isFinished: false
+                    isFinished: false,
+                    subtitle: 'EFT Verification'
                 },
                 {
                     id: 1,
                     show: false,
                     isActive: false,
-                    isFinished: false
+                    isFinished: false,
+                    subtitle: 'Verification Equipment'
                 },
                 {
                     id: 2,
                     show:false,
                     isActive: false,
-                    isFinished: false
+                    isFinished: false,
+                    subtitle: 'Verification Setup'
+                },
+                {
+                    id: 3,
+                    show:false,
+                    isActive: false,
+                    isFinished: false,
+                    subtitle: 'Verification Setup'
                 },
             ]
             
@@ -153,6 +166,7 @@ export default {
             this.windows[this.currentWindow].isFinished = true;
             this.windows[this.currentWindow].isActive = false;
             this.currentWindow += n;
+            this.subtitle = this.windows[this.currentWindow].subtitle;
             this.windows[this.currentWindow].show = true;
             this.windows[this.currentWindow].isActive = true;
             console.log(this.currentWindow)
@@ -175,6 +189,7 @@ export default {
             }
             
         },
+
         formSubmit(e){
             e.preventDefault();
             axios.post('http://localhost:5000/submit/eftverification')
@@ -248,8 +263,9 @@ export default {
 .formContainer{
     position: relative;
     margin: 0px auto;
-    width: 100%;
-    flex-grow: 1;
+    width: 90%;
+    padding: 20px 0px;
+    /* flex-grow: 1; */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -308,6 +324,7 @@ export default {
 
 .navButtonContainer{
     align-self: flex-end;
+    margin-right: 10px;
     /* margin-top: auto; */
 }
 
