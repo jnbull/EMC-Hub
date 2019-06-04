@@ -15,7 +15,54 @@
             <div class = 'formContainer'>
 
                 <!-- Form Content -->
-                <div v-if = 'windows[0].show' class = 'formContentContainer'>
+                <div v-if = 'windows[0].show' class = 'formFieldContainer'>
+                    <p>
+                        <label class = 'formLabel' for="date">Date</label>
+                        <input v-model = 'formData.date' class = 'formField' type="text" name = 'date'>
+                    </p>
+                    
+                    <p>
+                        <label class = 'formLabel' for="engineer">EMC Engineer</label>
+                        
+                        <select name = 'engineer' class = 'customSelect' v-model= "formData.engineer">
+                            <option disabled value="">Select: </option>
+                            <option value = 'Raymond Au'>Raymond Au</option>
+                            <option value = 'Jadon Bull'>Jadon Bull</option>
+                        </select>
+                    </p>
+
+                     <p>
+                        <label class = 'formLabel' for="asset">Generator Asset Number</label>
+                        
+                        <select name = 'asset' class = 'customSelect' v-model= "formData.asset">
+                            <option disabled value="">Select: </option>
+                            <option value = 'GEMC 4'>GEMC 4</option>
+                            <option value = 'GEMC 188'>GEMC 188</option>
+                            <option value = 'GEMC 317'>GEMC 317</option>
+                        </select>
+                    </p>
+
+                     <p>
+                        <label class = 'formLabel' for="generate">Create Verification Form?</label>
+                        
+                        <select name = 'generate' class = 'customSelect' v-model= "formData.generate">
+                            <option disabled value="">Select: </option>
+                            <option value = 'true'>Yes</option>
+                            <option value = 'false'>No</option>
+                        </select>
+                    </p>
+                    
+                </div>
+
+                <div v-if = 'windows[1].show' class = 'formContentContainer'>
+                    
+                </div>
+
+                <div v-if = 'windows[2].show' class = 'formContentContainer'>
+                    
+                </div>
+
+                <div v-if = 'windows[3].show' class = 'formContentContainer'>
                     <ol class = 'list-L'>
 
                         <li>
@@ -64,7 +111,7 @@
                         </li>
 
                         <div>
-                            <input placeholder = 'Peak Value: 1800V - 2200V' v-model = 'formData.peak' class = 'formField' type="text" name = 'peak'>
+                            <input placeholder = 'Peak Value: 1800V - 2200V' v-on:change = 'calculatePeaks' v-model = 'formData.peak' class = 'formField' type="text" name = 'peak'>
                         </div>
 
                     </ol>
@@ -73,33 +120,217 @@
                     <div class = 'setupPhoto-R'>
                         <img src="../assets/EFT_PK.png" alt="EFT Peak" height= '326.4' width= '435.2'>
                     </div>
+                </div>
+
+                <div v-if = 'windows[4].show' class = 'formContentContainer'>
+                    <div class = 'setupPhoto-L'>
+                        <img src="../assets/EFT_RT.png" alt="EFT Rise Time" height= '326.4' width= '435.2'>
+                    </div>
+
+                    <ol class = 'list-R'>
+                        <li>
+                            Using the "Multipurpose" dials with the "Fine" button selected, set the horizontal markers as follows:
+
+                            <p>
+                                i) "Line B" to 10% of the previously measured peak value: <strong>{{formData.peak10}}</strong>
+                            </p>
+
+                            <p>
+                                ii) "Line A" to 90% of the previouly measured peak value: <strong>{{formData.peak90}}</strong>
+                            </p>
+
+                        </li>
+
+                        <li>
+                            Using the "Select" button to switch axes, set the vertical markers with the "Multipurpose" dials as follows:
+
+                            <p>
+                                i) "Line A" to intersect with horizontal "Line B" at 10% of the peak value
+                            </p>
+
+                            <p>
+                                ii) "Line B" to intersect with horizontal "Line A" at 90% of the peak value
+                            </p>
+                        </li>
+
+                        <li>
+                            Record the delta time value as the rise time below:
+                        </li>
+                        
+                        <div>
+                            <input placeholder = 'Rise Time: 3.5ns - 6.5ns' v-model = 'formData.riseTime' class = 'formField' type="text" name = 'riseTime'>
+                        </div>
+                        
+                    </ol>
+                </div>
+
+                <div v-if = 'windows[5].show' class = 'formContentContainer'>
+
+                    <ol class = 'list-L'>
+                        <li>
+                            Using the "Multipurpose" dials with the "Fine" button selected, set the horizontal markers as follows:
+
+                            <p>
+                                i) "Line B" to 0V
+                            </p>
+
+                            <p>
+                                ii) "Line A" to 50% of the previouly measured peak value: <span class = 'bold'>{{formData.peak50}}</span>
+                            </p>
+
+                        </li>
+
+                        <li>
+                            Using the "Select" button to switch axes, set the vertical markers with the "Multipurpose" dials as follows:
+
+                            <p>
+                                i) "Line A" to intersect with horizontal "Line A" at the first instance on the waveform
+                            </p>
+
+                            <p>
+                                ii) "Line B" to intersect with horizontal "Line A" at the second instance on the waveform.
+                            </p>
+                        </li>
+
+                        <li>
+                            Record the delta time value as the fall time below:
+                        </li>
+
+                        <div>
+                            <input placeholder = 'Fall Time: 35ns - 65ns' v-model = 'formData.fallTime' class = 'formField' type="text" name = 'fallTime'>
+                        </div>
+                        
+
+                    </ol>
+
+                    <div class = 'setupPhoto-R'>
+                        <img src="../assets/EFT_FT.png" alt="EFT Fall Time" height= '326.4' width= '435.2'>
+                    </div>
+                </div>
+
+                <div v-if = 'windows[6].show' class = 'formContentContainer'>
+                    <div class = 'setupPhoto-L'>
+                        <img src="../assets/EFT_BP.png" alt="EFT Burst Period" height= '326.4' width= '435.2'>
+                    </div>
+
+                    <ol class = 'list-R'>
+
+                        <li>
+                            Under "Horizontal" panel, set "Scale" to 4.00ms
+                        </li>
+
+                        <li>
+                            Setting trigger:
+
+                            <p>
+                                i) Under "Trigger" panel: Set "Level" above noise floor
+                            </p>
+
+                            <p>
+                                ii) Under "Horizontal" panel: Set "Position" so that the trigger point is located in the first half of the display
+                            </p>
+                        </li>
+
+                        <li>
+                            Start EFT test at a level of +4kV out of the direct output. Set the oscilloscope into "Single" capture mode
+                        </li>
+
+                        <li>
+                            Using the "Multipurpose" dials with the "Fine" button selected, set the vertical markers as follows:
+
+                            <p>
+                                i) "Line A" to the beginning of the burst
+                            </p>
+
+                            <p>
+                                ii) "Line B" to the end of the burst
+                            </p>
+
+                        </li>
+
+                        <li>
+                            Record the delta time value as Burst Period below:
+                        </li>
+                        
+                        <div>
+                            <input placeholder = 'Burst Period: 12ms - 18ms' v-model = 'formData.burstPeriod' class = 'formField' type="text" name = 'burstPeriod'>
+                        </div>
+                        
+                    </ol>
+                </div>
+
+                <div v-if = 'windows[7].show' class = 'formContentContainer'>
+
+                    <ol class = 'list-L'>
+
+                        <li>
+                            Under "Horizontal" panel, set "Scale" to 100ms
+                        </li>
+
+                        <li>
+                            Setting trigger:
+
+                            <p>
+                                i) Under "Trigger" panel: Set "Level" above noise floor
+                            </p>
+
+                            <p>
+                                ii) Under "Horizontal" panel: Set "Position" so that the trigger point is located in the first half of the display
+                            </p>
+                        </li>
+
+                        <li>
+                            Start EFT test at a level of +4kV out of the direct output. Set the oscilloscope into "Single" capture mode
+                        </li>
+
+                        <li>
+                            Using the "Multipurpose" dials with the "Fine" button selected, set the vertical markers as follows:
+
+                            <p>
+                                i) "Line A" to the beginning of the first burst
+                            </p>
+
+                            <p>
+                                ii) "Line B" to the beginning of the next burst
+                            </p>
+
+                        </li>
+
+                        <li>
+                            Record the delta time value as Burst Duration below:
+                        </li>
+
+                    <div>
+                        <input placeholder = 'Burst Duration: 240ms - 360ms' v-model = 'formData.burstDuration' class = 'formField' type="text" name = 'burstDuration'>
+                    </div>
                     
-                    
 
+                </ol>
+
+                <div class = 'setupPhoto-R'>
+                    <img src="../assets/EFT_BD.png" alt="EFT Burst Duration" height= '326.4' width= '435.2'>
                 </div>
-
-                <div v-if = 'windows[1].show' class = 'formContentContainer'>
-                    
                 </div>
+                
+            </div>
 
-                 <div v-if = 'windows[2].show' class = 'formContentContainer'>
-                    
-                </div>
+            <!-- Form Navigation -->
+            <div class = 'navButtonContainer'>
+                <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
+                <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
+                <router-link to = '/verifications/success'><button v-if = 'buttonSubmit'>Submit</button></router-link>
+            </div>
 
-                <!-- Form Navigation -->
-                <div class = 'navButtonContainer'>
-                    <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
-                    <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
-                    <router-link to = '/verifications/success'><button v-if = 'buttonSubmit'>Submit</button></router-link>
-                </div>
-
-                <!-- Form Step Bubbles -->
-                <div class = 'stepContainer'>
-                    <span v-bind:class = "{active: windows[0].isActive, finish: windows[0].isFinished}" class="step"></span>
-                    <span v-bind:class = "{active: windows[1].isActive, finish: windows[1].isFinished}" class="step"></span>
-                    <span v-bind:class = "{active: windows[2].isActive, finish: windows[2].isFinished}" class="step"></span>
-                </div>
-
+            <!-- Form Step Bubbles -->
+            <div class = 'stepContainer'>
+                <span v-bind:class = "{active: windows[0].isActive, finish: windows[0].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[1].isActive, finish: windows[1].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[2].isActive, finish: windows[2].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[3].isActive, finish: windows[3].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[4].isActive, finish: windows[4].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[5].isActive, finish: windows[5].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[6].isActive, finish: windows[6].isFinished}" class="step"></span>
+                <span v-bind:class = "{active: windows[7].isActive, finish: windows[7].isFinished}" class="step"></span>
             </div>
 
             <div id = 'loadingScreen' class = 'formContainer'>
@@ -120,7 +351,18 @@ export default {
     data() {
         return{
             formData: {
+                date: '',
+                engineer: '',
+                generate: '',
+                asset: '',
                 peak: "",
+                peak10: "",
+                peak90: "",
+                peak50: "",
+                riseTime: '',
+                fallTime: '',
+                burstPeriod: '',
+                burstDuration: ''
             },
             subtitle: 'EFT Verification',
             currentWindow: 0,
@@ -154,7 +396,35 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
-                    subtitle: 'Verification Setup'
+                    subtitle: 'Peak Value Measurement'
+                },
+                {
+                    id: 4,
+                    show:false,
+                    isActive: false,
+                    isFinished: false,
+                    subtitle: 'Rise Time Measurement'
+                },
+                {
+                    id: 5,
+                    show:false,
+                    isActive: false,
+                    isFinished: false,
+                    subtitle: 'Fall Time Measurement'
+                },
+                {
+                    id: 6,
+                    show:false,
+                    isActive: false,
+                    isFinished: false,
+                    subtitle: 'Burst Period Measurement'
+                },
+                {
+                    id: 7,
+                    show:false,
+                    isActive: false,
+                    isFinished: false,
+                    subtitle: 'Burst Duration Measurement'
                 },
             ]
             
@@ -199,6 +469,12 @@ export default {
             // .catch(err => {
             //     console.log(err)
             // })
+        },
+
+        calculatePeaks(){
+            this.formData.peak10 = (this.formData.peak * 0.10) + 'V'; 
+            this.formData.peak90 = (this.formData.peak * 0.90) + 'V';
+            this.formData.peak50 = (this.formData.peak * 0.50) + 'V';
         }
 
     }
@@ -219,6 +495,7 @@ export default {
     cursor: pointer;
     transition: transform .2s;
     text-align: center;
+    width: 100%;
 }
 
 .customSelect:hover{
@@ -261,27 +538,30 @@ export default {
 }
 
 .formContainer{
-    position: relative;
-    margin: 0px auto;
+    margin: auto;
     width: 90%;
-    padding: 20px 0px;
-    /* flex-grow: 1; */
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 }
 
 .formContentContainer{
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-evenly;
     align-items: center;
-    /* padding: 20px; 
-    background-color: #f1f1f1;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-bottom: 40px; */
+    height: 100%;
+    padding: 10px;
+}
+
+.formFieldContainer{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0px;
+    width: 100%;
+    align-self: flex-start;
 }
 
 .setupPhoto-L{
@@ -324,8 +604,8 @@ export default {
 
 .navButtonContainer{
     align-self: flex-end;
-    margin-right: 10px;
-    /* margin-top: auto; */
+    margin-right: 75px;
+    margin-top: auto;
 }
 
 button{
@@ -344,7 +624,7 @@ button{
 
 .stepContainer{
     text-align: center;
-    margin: auto 0px 40px 0px;
+    margin: 0px 0px 20px 0px;
 }
 
 .step{
@@ -408,6 +688,11 @@ button{
         opacity: 0.5;
     }
 
+}
+
+p{
+    margin-left: 10px;
+    margin: 2px 0px;
 }
 
 </style>
