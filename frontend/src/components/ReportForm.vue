@@ -18,21 +18,21 @@
                 <!-- Form Content -->
                 <div v-if = 'windows[0].show' class = 'formContentContainer'>
                     <div>
-                        <label class = 'formLabel' for="productName">Product Name</label>
-                        <input v-bind:class = '{invalid: windows[0].validated}' v-model = 'windows[0].formData.productName' class = 'formField' type="text" name = 'productName'>
-                        <p>{{empty}}</p>
+                        <label v-bind:class = '{invalid: windows[0].formData[0].validated == false}' class = 'formLabel' for="productName">Product Name</label>
+                        <input v-model = 'windows[0].formData[0].content' class = 'formField' type="text" name = 'productName'>
+                        <p class = 'errorText' v-if = 'windows[0].formData[0].validated == false'>{{windows[0].formData[0].error}}</p>
                     </div>
                     
                     <div>
-                        <label class = 'formLabel' for="companyName">Company Name</label>
-                        <input v-bind:class = '{invalid: windows[0].validated}' v-model = 'windows[0].formData.companyName' class = 'formField' type="text" name = 'companyName'>
-                        <p>{{empty}}</p>
+                        <label v-bind:class = '{invalid: windows[0].formData[1].validated == false}' class = 'formLabel' for="companyName">Company Name</label>
+                        <input v-model = 'windows[0].formData[1].content' class = 'formField' type="text" name = 'companyName'>
+                        <p class = 'errorText' v-if = 'windows[0].formData[1].validated == false'>{{windows[0].formData[1].error}}</p>
                     </div>
                     
                     <div>
-                        <label class = 'formLabel' for="data">Data Location</label>
-                        <input v-bind:class = '{invalid: windows[0].validated}' v-model = 'windows[0].formData.data' class = 'formField' type="text" name = 'dataLocation'>
-                        <p>{{empty}}</p>
+                        <label v-bind:class = '{invalid: windows[0].formData[2].validated == false}' class = 'formLabel' for="data">Data Location</label>
+                        <input v-model = 'windows[0].formData[2].content' class = 'formField' type="text" name = 'dataLocation'>
+                        <p class = 'errorText' v-if = 'windows[0].formData[2].validated == false'>{{windows[0].formData[2].error}}</p>
                     </div>
 
                 </div>
@@ -143,29 +143,41 @@ export default {
                     show: true,
                     isActive: true,
                     isFinished: false,
-                    formData: {
-                        productName: "",
-                        companyName: "",
-                        data: "",
-                    },
-                    invalid: true,
-                    empty: "",
+                    formData: [
+                        {
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: 'Please enter a Product Name'
+                        },
+                        {
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: 'Please enter a Company Name'
+                        },
+                        {
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: 'Please enter a Data Location'
+                        }
+                    ],
+                    validated: false,
                 },
                 {
                     id: 1,
                     show: false,
                     isActive: false,
                     isFinished: false,
-                    invalid: true,
-                    empty: "",
+                    validated: false,
                 },
                 {
                     id: 2,
                     show:false,
                     isActive: false,
                     isFinished: false,
-                    invalid: true,
-                    empty: "",
+                    validated: false,
                 },
             ]
             
@@ -175,26 +187,15 @@ export default {
         
         nextPrev(n){
 
-            for (data in this.windows[this.currentWindow].formData){
-                if (data != ''){
-                    this.counter += 1;
-                    console.log(this.counter);
-                }
+            if (n == 1){
+                this.validateWindow(this.windows[this.currentWindow]);
             }
 
-            if (this.counter == this.windows[this.currentWindow].formData.length - 1){
-                this.windows[this.currentWindow].invalid = false;
-                console.log(this.windows[this.currentWindow].invalid)
-            }
-
-            else {
-                this.windows[this.currentWindow].invalid = true;
-                console.log(this.windows[this.currentWindow].invalid)
-            }
-
-            if(this.windows[this.currentWindow].invalid == false){
+            if (n == -1 || this.windows[this.currentWindow].validated == true){
                 this.windows[this.currentWindow].show = false;
-                this.windows[this.currentWindow].isFinished = true;
+                if (n != -1){
+                    this.windows[this.currentWindow].isFinished = true;
+                }
                 this.windows[this.currentWindow].isActive = false;
                 this.currentWindow += n;
                 this.windows[this.currentWindow].show = true;
@@ -216,9 +217,29 @@ export default {
                     this.buttonSubmit = false;
                 }
             }
+            
 
-            else if(this.windows[this.currentWindow].invalid == true){
-                this.windows[this.currentWindow].empty = 'Please fill out this field';
+        },
+
+        validateWindow(window){
+            window.validated = false;
+
+            var counter = 0;
+            for (const field of window.formData){
+                if (field.type == 'dataRequired'){
+                    if (field.content != ''){
+                        field.validated = true;
+                        counter += 1;
+                    }
+                    else{
+                        field.validated = false;
+                    }
+                }
+                // other types here
+            }
+
+            if (counter == window.formData.length){
+                window.validated = true;
             }
         },
 
@@ -241,6 +262,11 @@ export default {
 
 @import url('https://fonts.googleapis.com/css?family=Oswald|Roboto&display=swap');
 
+.errorText{
+    font-style: italic;
+    color: grey;
+    font-size: 10pt;
+}
 .customSelect{
     background-color:#34495e;
     font-family: 'Roboto';
@@ -315,7 +341,7 @@ export default {
 
  .formLabel{
     display: block;
-    margin: 10px 0px;
+    margin: 10px 0px 2px 0px;
 }
 
 .formField{
@@ -350,8 +376,8 @@ button{
     margin: auto 0px 40px 0px;
 }
 
-.formField.invalid{
-    background-color: #ef4545;
+.formLabel.invalid{
+    color: red;
 }
 
 .step{
