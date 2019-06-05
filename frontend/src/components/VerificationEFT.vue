@@ -91,10 +91,6 @@
                         </li>
 
                         <li>
-                            Start EFT test at a level of +4kV out of the direct output. Set the oscilloscope into "Single" capture mode
-                        </li>
-
-                        <li>
                             Using the "Multipurpose" dials with the "Fine" button selected, set the horizontal markers: 
 
                             <p>
@@ -499,7 +495,7 @@ export default {
 }
 
 .customSelect:hover{
-    transform: scale(1.05);
+    transform: scale(1.01);
 }
 
 .sectionContainer{
@@ -562,6 +558,7 @@ export default {
     padding: 20px 0px;
     width: 100%;
     align-self: flex-start;
+    align-items: center;
 }
 
 .setupPhoto-L{
@@ -600,6 +597,10 @@ export default {
     margin-right: auto;
     width: 100%;
     padding:10px;
+}
+
+.formFieldContainer p{
+    width: 50%;
 }
 
 .navButtonContainer{
@@ -690,9 +691,11 @@ button{
 
 }
 
-p{
+li p{
     margin-left: 10px;
     margin: 2px 0px;
 }
+
+
 
 </style>
