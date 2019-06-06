@@ -15,51 +15,112 @@
             <div class = 'formContainer'>
 
                 <!-- Form Content -->
-                <div v-if = 'windows[0].show' class = 'formFieldContainer'>
-                    <p>
-                        <label class = 'formLabel' for="date">Date</label>
-                        <input v-model = 'formData.date' class = 'formField' type="text" name = 'date'>
-                    </p>
+                <div v-if = 'windows[0].show' class = 'window'>
+                    <div class = 'formFieldContainer'>
+                        <label v-bind:class = '{invalid: windows[0].formData[0].validated == false}' class = 'formLabel' for="date">Date</label>
+                        <input v-model = 'windows[0].formData[0].content' class = 'formField' type="date" name = 'date'>
+                        <p class = 'errorText' v-if = 'windows[0].formData[0].validated == false'>{{windows[0].formData[0].error}}</p>
+                    </div>
                     
-                    <p>
-                        <label class = 'formLabel' for="engineer">EMC Engineer</label>
+                    <div class = 'formFieldContainer'>
+                        <label v-bind:class = '{invalid: windows[0].formData[1].validated == false}' class = 'formLabel' for="engineer">EMC Engineer</label>
                         
-                        <select name = 'engineer' class = 'customSelect' v-model= "formData.engineer">
+                        <select name = 'engineer' class = 'customSelect' v-model= "windows[0].formData[1].content">
                             <option disabled value="">Select: </option>
                             <option value = 'Raymond Au'>Raymond Au</option>
                             <option value = 'Jadon Bull'>Jadon Bull</option>
                         </select>
-                    </p>
 
-                     <p>
-                        <label class = 'formLabel' for="asset">Generator Asset Number</label>
+                        <p class = 'errorText' v-if = 'windows[0].formData[1].validated == false'>{{windows[0].formData[1].error}}</p>
+                    </div>
+
+                    <div class = 'formFieldContainer'>
+                        <label v-bind:class = '{invalid: windows[0].formData[2].validated == false}' class = 'formLabel' for="asset">Generator Asset Number</label>
                         
-                        <select name = 'asset' class = 'customSelect' v-model= "formData.asset">
+                        <select name = 'asset' class = 'customSelect' v-model= "windows[0].formData[2].content">
                             <option disabled value="">Select: </option>
                             <option value = 'GEMC 4'>GEMC 4</option>
                             <option value = 'GEMC 188'>GEMC 188</option>
                             <option value = 'GEMC 317'>GEMC 317</option>
                         </select>
-                    </p>
 
-                     <p>
-                        <label class = 'formLabel' for="generate">Create Verification Form?</label>
+                        <p class = 'errorText' v-if = 'windows[0].formData[2].validated == false'>{{windows[0].formData[2].error}}</p>
+                    </div>
+
+                     <div class = 'formFieldContainer'>
+                        <label v-bind:class = '{invalid: windows[0].formData[3].validated == false}' class = 'formLabel' for="generate">Create Verification Form?</label>
                         
-                        <select name = 'generate' class = 'customSelect' v-model= "formData.generate">
+                        <select name = 'generate' class = 'customSelect' v-model= "windows[0].formData[3].content">
                             <option disabled value="">Select: </option>
                             <option value = 'true'>Yes</option>
                             <option value = 'false'>No</option>
                         </select>
-                    </p>
+
+                        <p class = 'errorText' v-if = 'windows[0].formData[3].validated == false'>{{windows[0].formData[3].error}}</p>
+                    </div>
                     
                 </div>
 
-                <div v-if = 'windows[1].show' class = 'formContentContainer'>
+                <div v-if = 'windows[1].show' class = 'formContentContainer photoGrid'>
+                    <div class = 'leftArrow'>
+                        <i><font-awesome-icon icon = 'angle-left'/></i>
+                    </div>
+                    <div>
+                        <img src="../assets/GEMC4.jpg" alt="" height= '288' width= '384'>
+                        <p style = 'text-align: center' class = formLabel>Combination Waveform Generator</p>
+                    </div>
+                    <div class = 'rightArrow'> 
+                        <i><font-awesome-icon icon = 'angle-right'/></i>
+                    </div>
                     
                 </div>
 
                 <div v-if = 'windows[2].show' class = 'formContentContainer'>
                     
+                    <div class = 'setupPhoto-L'>
+                        <img src="../assets/EFT Setup.jpg" alt="EFT Setup" height= '326.4' width= '435.2'>
+                    </div>
+
+                    <ol class = 'list-R'>
+
+                        <li>
+                            Connect oscilloscope power to isolation transformer.
+                        </li>
+
+                        <li>
+                            Connect BNC-type 20dB attenuator to oscilloscope output.
+                        </li>
+
+                        <li>
+                            Connect a BNC cable from the attenuator to the 50ohm load.
+                        </li>
+
+                        <li>
+                            Connect a CCL cable from the 50ohm load to the burst output of the waveform generator.
+                        </li>
+
+                        <li>
+                            Ensure proper grounding of the waveform generator.
+                        </li>
+
+                        <li>
+                            Ensure oscilloscope has the following settings:
+                            <p>
+                                i) Under "Vertical" panel: "Menu 1" -> On bottom of display: "Termination" -> 50ohm
+                            </p>
+
+                            <p>
+                                ii) Under "Vertical" panel: "Menu 1" -> On bottom of display: "More" -> "Probe Setup" -> "Attenuation" -> 1000x
+                            </p>
+
+                            <p>
+                                iii) Under "Horizontal" panel: "Acquire" -> On bottom of display: "Record Length" -> 5M
+                            </p>
+                            
+                        </li>
+
+                    </ol>
+            
                 </div>
 
                 <div v-if = 'windows[3].show' class = 'formContentContainer'>
@@ -102,12 +163,13 @@
                             </p>
                         </li>
 
-                        <li>
+                        <li v-bind:class = '{invalid: windows[3].formData[0].validated == false}' class = 'formLabel'>
                             Record the measured peak value below:
                         </li>
 
                         <div>
-                            <input placeholder = 'Peak Value: 1800V - 2200V' v-on:change = 'calculatePeaks' v-model = 'formData.peak' class = 'formField' type="text" name = 'peak'>
+                            <input placeholder = 'Peak Value: 1800V - 2200V' v-on:change = 'calculatePeaks' v-model = 'windows[3].formData[0].content' class = 'formField' type="text" name = 'peak'>
+                            <p class = 'errorText' v-if = 'windows[3].formData[0].validated == false'>{{windows[3].formData[0].error}}</p>
                         </div>
 
                     </ol>
@@ -128,11 +190,11 @@
                             Using the "Multipurpose" dials with the "Fine" button selected, set the horizontal markers as follows:
 
                             <p>
-                                i) "Line B" to 10% of the previously measured peak value: <strong>{{formData.peak10}}</strong>
+                                i) "Line B" to 10% of the previously measured peak value: <strong>{{windows[4].peak10}}</strong>
                             </p>
 
                             <p>
-                                ii) "Line A" to 90% of the previouly measured peak value: <strong>{{formData.peak90}}</strong>
+                                ii) "Line A" to 90% of the previouly measured peak value: <strong>{{windows[4].peak90}}</strong>
                             </p>
 
                         </li>
@@ -154,7 +216,8 @@
                         </li>
                         
                         <div>
-                            <input placeholder = 'Rise Time: 3.5ns - 6.5ns' v-model = 'formData.riseTime' class = 'formField' type="text" name = 'riseTime'>
+                            <input placeholder = 'Rise Time: 3.5ns - 6.5ns' v-model = 'windows[4].formData[0].content' class = 'formField' type="text" name = 'riseTime'>
+                            <p class = 'errorText' v-if = 'windows[4].formData[0].validated == false'>{{windows[4].formData[0].error}}</p>
                         </div>
                         
                     </ol>
@@ -171,7 +234,7 @@
                             </p>
 
                             <p>
-                                ii) "Line A" to 50% of the previouly measured peak value: <span class = 'bold'>{{formData.peak50}}</span>
+                                ii) "Line A" to 50% of the previouly measured peak value: <span class = 'bold'>{{windows[5].peak50}}</span>
                             </p>
 
                         </li>
@@ -193,7 +256,8 @@
                         </li>
 
                         <div>
-                            <input placeholder = 'Fall Time: 35ns - 65ns' v-model = 'formData.fallTime' class = 'formField' type="text" name = 'fallTime'>
+                            <input placeholder = 'Fall Time: 35ns - 65ns' v-model = 'windows[5].formData[0].content' class = 'formField' type="text" name = 'fallTime'>
+                            <p class = 'errorText' v-if = 'windows[5].formData[0].validated == false'>{{windows[5].formData[0].error}}</p>
                         </div>
                         
 
@@ -249,7 +313,8 @@
                         </li>
                         
                         <div>
-                            <input placeholder = 'Burst Period: 12ms - 18ms' v-model = 'formData.burstPeriod' class = 'formField' type="text" name = 'burstPeriod'>
+                            <input placeholder = 'Burst Period: 12ms - 18ms' v-model = 'windows[6].formData[0].content' class = 'formField' type="text" name = 'burstPeriod'>
+                            <p class = 'errorText' v-if = 'windows[6].formData[0].validated == false'>{{windows[6].formData[0].error}}</p>
                         </div>
                         
                     </ol>
@@ -297,7 +362,8 @@
                         </li>
 
                     <div>
-                        <input placeholder = 'Burst Duration: 240ms - 360ms' v-model = 'formData.burstDuration' class = 'formField' type="text" name = 'burstDuration'>
+                        <input placeholder = 'Burst Duration: 240ms - 360ms' v-model = 'windows[7].formData[0].content' class = 'formField' type="text" name = 'burstDuration'>
+                        <p class = 'errorText' v-if = 'windows[7].formData[0].validated == false'>{{windows[7].formData[0].error}}</p>
                     </div>
                     
 
@@ -347,10 +413,6 @@ export default {
     data() {
         return{
             formData: {
-                date: '',
-                engineer: '',
-                generate: '',
-                asset: '',
                 peak: "",
                 peak10: "",
                 peak90: "",
@@ -371,6 +433,37 @@ export default {
                     show: true,
                     isActive: true,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'date',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'engineer',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'generate',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'asset',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        }
+                    ],
+                    validated: false,
                     subtitle: 'EFT Verification'
                 },
                 {
@@ -378,6 +471,16 @@ export default {
                     show: false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'equipPhoto',
+                            type: 'noValidation',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Verification Equipment'
                 },
                 {
@@ -385,6 +488,16 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'equipSetup',
+                            type: 'noValidation',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Verification Setup'
                 },
                 {
@@ -392,6 +505,18 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'peakValue',
+                            type: 'dataRange',
+                            min: 1800,
+                            max: 2200,
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Peak Value Measurement'
                 },
                 {
@@ -399,6 +524,20 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    peak10: '',
+                    peak90: '',
+                    formData: [
+                        {
+                            name: 'riseTime',
+                            type: 'dataRange',
+                            min: 3.5,
+                            max: 6.5,
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Rise Time Measurement'
                 },
                 {
@@ -406,6 +545,19 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    peak50: '',
+                    formData: [
+                        {
+                            name: 'fallTime',
+                            type: 'dataRange',
+                            min: 35,
+                            max: 65,
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Fall Time Measurement'
                 },
                 {
@@ -413,6 +565,18 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'burstPeriod',
+                            type: 'dataRange',
+                            min: 12,
+                            max: 18,
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Burst Period Measurement'
                 },
                 {
@@ -420,6 +584,18 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'burstDuration',
+                            type: 'dataRange',
+                            min: 240,
+                            max: 360,
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
                     subtitle: 'Burst Duration Measurement'
                 },
             ]
@@ -427,33 +603,85 @@ export default {
         }
     },
     methods: {
-        nextPrev(n){
-            this.windows[this.currentWindow].show = false;
-            this.windows[this.currentWindow].isFinished = true;
-            this.windows[this.currentWindow].isActive = false;
-            this.currentWindow += n;
-            this.subtitle = this.windows[this.currentWindow].subtitle;
-            this.windows[this.currentWindow].show = true;
-            this.windows[this.currentWindow].isActive = true;
-            console.log(this.currentWindow)
-            console.log(this.windows.length)
 
-            if (this.currentWindow == this.windows.length - 1){
-                this.buttonPrevious = true;
-                this.buttonNext = false;
-                this.buttonSubmit = true;
+        nextPrev(n){
+
+            if (n == 1){
+                this.validateWindow(this.windows[this.currentWindow]);
             }
-            else if(this.currentWindow == 0){
-                this.buttonPrevious = false;
-                this.buttonNext = true;
-                this.buttonSubmit = false;
-            }
-            else{
-                this.buttonPrevious = true;
-                this.buttonNext = true;
-                this.buttonSubmit = false;
+
+            if (n == -1 || this.windows[this.currentWindow].validated == true){
+                this.windows[this.currentWindow].show = false;
+                if (n != -1){
+                    this.windows[this.currentWindow].isFinished = true;
+                }
+                this.windows[this.currentWindow].isActive = false;
+                this.currentWindow += n;
+                this.subtitle = this.windows[this.currentWindow].subtitle;
+                this.windows[this.currentWindow].show = true;
+                this.windows[this.currentWindow].isActive = true;
+
+                if (this.currentWindow == this.windows.length - 1){
+                    this.buttonPrevious = true;
+                    this.buttonNext = false;
+                    this.buttonSubmit = true;
+                }
+                else if(this.currentWindow == 0){
+                    this.buttonPrevious = false;
+                    this.buttonNext = true;
+                    this.buttonSubmit = false;
+                }
+                else{
+                    this.buttonPrevious = true;
+                    this.buttonNext = true;
+                    this.buttonSubmit = false;
+                }
             }
             
+
+        },
+
+        validateWindow(window){
+            window.validated = false;
+
+            var counter = 0;
+            for (const field of window.formData){
+                if(field.type == 'noValidation'){
+                    field.validated = true;
+                    counter += 1;
+                }
+                
+                if (field.type == 'dataRequired'){
+                    if (field.content != ''){
+                        field.validated = true;
+                        counter += 1;
+                    }
+                    else{
+                        field.validated = false;
+                        field.error = 'This field is required.'
+                    }
+                }
+
+                else if (field.type == 'dataRange'){
+                    if(field.content == ''){
+                        field.validated = false;
+                        field.error = 'This field is required.'
+                    }
+                    else if (field.content < field.min || field.content > field.max){
+                        field.validated = false;
+                        field.error = 'The inputted value is out of range'
+                    }
+                    else{
+                        field.validated = true;
+                        counter +=1
+                    }
+                }
+                // other types here
+            }
+
+            if (counter == window.formData.length){
+                window.validated = true;
+            }
         },
 
         formSubmit(e){
@@ -468,9 +696,9 @@ export default {
         },
 
         calculatePeaks(){
-            this.formData.peak10 = (this.formData.peak * 0.10) + 'V'; 
-            this.formData.peak90 = (this.formData.peak * 0.90) + 'V';
-            this.formData.peak50 = (this.formData.peak * 0.50) + 'V';
+            this.windows[4].peak10 = (this.windows[3].formData[0].content * 0.10) + 'V'; 
+            this.windows[4].peak90 = (this.windows[3].formData[0].content * 0.90) + 'V';
+            this.windows[5].peak50 = (this.windows[3].formData[0].content * 0.50) + 'V';
         }
 
     }
@@ -478,6 +706,29 @@ export default {
 </script>
 
 <style scoped>
+
+i{
+    font-size: 48pt;
+    color:#34495e;
+}
+
+.leftArrow{
+    margin-right: 60px;
+}
+
+.rightArrow{
+    margin-left: 60px;
+}
+
+.errorText{
+    font-style: italic;
+    color: grey;
+    font-size: 10pt;
+}
+
+.formLabel.invalid{
+    color: red;
+}
 
 .customSelect{
     background-color:#34495e;
@@ -552,7 +803,15 @@ export default {
     padding: 10px;
 }
 
-.formFieldContainer{
+.photoGrid{
+    flex-wrap: wrap;
+}
+
+.photoGrid img{
+    margin: 2px;
+}
+
+.window{
     display: flex;
     flex-direction: column;
     padding: 20px 0px;
@@ -588,7 +847,7 @@ export default {
 
  .formLabel{
     display: block;
-    margin: 10px 0px;
+    margin: 10px 0px 2px 0px;
 }
 
 .formField{
@@ -599,7 +858,7 @@ export default {
     padding:10px;
 }
 
-.formFieldContainer p{
+.formFieldContainer{
     width: 50%;
 }
 
