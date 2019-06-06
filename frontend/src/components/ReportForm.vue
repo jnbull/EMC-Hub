@@ -37,53 +37,84 @@
 
                 </div>
 
-                 <div v-if = 'windows[1].show' class = 'formContentContainer'>
-                    <p>
-                        <label class = 'formLabel' for="standard">Product Standard</label>
+                <div v-if = 'windows[1].show' class = 'formContentContainer'>
+                    <div>
+                        <label v-bind:class = '{invalid: windows[1].formData[0].validated == false}' class = 'formLabel' for="standard">Product Standard</label>
             
-                        <select name = 'standard' class = 'customSelect' v-model= "formData.standard">
+                        <select name = 'standard' class = 'customSelect' v-model= "windows[1].formData[0].content">
                             <option disabled value="">Select: </option>
-                            <option>CISPR 11</option>
-                            <option>CISPR 32</option>
-                            <option>FCC</option>
+                            <option value = 'CISPR 11'>CISPR 11</option>
+                            <option value = 'CISPR 32'>CISPR 32</option>
+                            <option value = 'FCC'>FCC</option>
                         </select>
-                        
-                    <p>
-                        <label class = 'formLabel' for="class_">Product Class</label>
 
-                        <select name = 'class_' class = 'customSelect' v-model= "formData.class_">
+                        <p class = 'errorText' v-if = 'windows[1].formData[0].validated == false'>{{windows[1].formData[0].error}}</p>
+                    </div>
+
+                    <div>
+                        <label v-bind:class = '{invalid: windows[1].formData[1].validated == false}' class = 'formLabel' for="class_">Product Class</label>
+
+                        <select name = 'setup' class = 'customSelect' v-model= "windows[1].formData[1].content">
+                            <option disabled value="">Select: </option>
+                            <option value = 'Table Top'>Table Top</option>
+                            <option value = 'Floor Standing'>Floor Standing</option>
+                        </select>
+
+                        <p class = 'errorText' v-if = 'windows[1].formData[1].validated == false'>{{windows[1].formData[1].error}}</p>
+                    </div>
+                    
+                    <div>
+                        <label v-bind:class = '{invalid: windows[1].formData[2].validated == false}' class = 'formLabel' for="power">Input Power</label>
+                        
+                        <select name = 'power' class = 'customSelect' v-model= "windows[1].formData[2].content">
+                            <option disabled value="">Select: </option>
+                            <option value = 'Single Phase'>Single-Phase</option>
+                            <option value = 'Three Phase'>Three-Phase</option>
+                        </select>
+
+                        <p class = 'errorText' v-if = 'windows[1].formData[2].validated == false'>{{windows[1].formData[2].error}}</p>
+                    </div>
+
+                </div>
+
+                 <div v-if = 'windows[2].show' class = 'formContentContainer'>
+                    <div>
+                        <label v-bind:class = '{invalid: windows[2].formData[0].validated == false}' class = 'formLabel' for="class_">Product Class</label>
+
+                        <select name = 'class_' class = 'customSelect' v-model= "windows[2].formData[0].content">
                             <option disabled value="">Select: </option>
                             <option>Class A</option>
                             <option>Class B</option>
                         </select>
-                    </p>
-                    
-                    <p>
-                        <label class = 'formLabel' for="power">Input Power</label>
-                        
-                        <select name = 'power' class = 'customSelect' v-model= "formData.power">
-                            <option disabled value="">Select: </option>
-                            <option>Single-Phase</option>
-                            <option>Three-Phase</option>
-                        </select>
-                    </p>
-                </div>
 
-                 <div v-if = 'windows[2].show' class = 'formContentContainer'>
-                    <p>
-                        <label class = 'formLabel' for="productName">Page3</label>
-                        <input v-model = 'formData.productName' class = 'formField' type="text" name = 'productName'>
-                    </p>
+                        <p class = 'errorText' v-if = 'windows[2].formData[0].validated == false'>{{windows[2].formData[0].error}}</p>
+                    </div>
                     
-                    <p>
-                        <label class = 'formLabel' for="companyName">Company Name</label>
-                        <input v-model = 'formData.companyName' class = 'formField' type="text" name = 'companyName'>
-                    </p>
+                    <div>
+                        <label v-bind:class = '{invalid: windows[2].formData[1].validated == false}' class = 'formLabel'>LISN</label>
+
+                        <select name = 'lisn' class = 'customSelect' v-model= "windows[2].formData[1].content">
+                            <option disabled value="">Select: </option>
+                            <option value = 'GEMC 302'>GEMC 302</option>
+                            <option value = 'GEMC 303'>GEMC 303</option>
+                        </select>
+
+                        <p class = 'errorText' v-if = 'windows[2].formData[1].validated == false'>{{windows[2].formData[1].error}}</p>
+                    </div>
+
+                    <div>
+                        <label v-bind:class = '{invalid: windows[2].formData[2].validated == false}' class = 'formLabel'>Spectrum Analyzer</label>
+
+                        <select name = 'specA' class = 'customSelect' v-model= "windows[2].formData[2].content">
+                            <option disabled value="">Select: </option>
+                            <option value = 'GEMC 160'>GEMC 160</option>
+                            <option value = 'GEMC XXX'>GEMC XXX</option>
+                        </select>
+
+                        <p class = 'errorText' v-if = 'windows[2].formData[2].validated == false'>{{windows[2].formData[2].error}}</p>
+                    </div>
                     
-                    <p>
-                        <label class = 'formLabel' for="data">Data Location</label>
-                        <input v-model = 'formData.data' class = 'formField' type="text" name = 'dataLocation'>
-                    </p>
+    
                 </div>
 
                 <!-- Form Navigation -->
@@ -119,19 +150,6 @@ export default {
     name: 'ReportForm',
     data() {
         return{
-            formData: {
-                
-                standard: "",
-                class_: "",
-                power: "",
-                // equipment: {
-                //     SpecA: '',
-                //     LISN: ''
-                // },
-                // standard: '',
-                // class_:'',
-                // setup: ;
-            },
             currentWindow: 0,
             counter: 0,
             buttonPrevious: false,
@@ -145,22 +163,25 @@ export default {
                     isFinished: false,
                     formData: [
                         {
+                            name: 'productName',
                             type: 'dataRequired',
                             validated: null,
                             content: '',
-                            error: 'Please enter a Product Name'
+                            error: ''
                         },
                         {
+                            name: 'companyName',
                             type: 'dataRequired',
                             validated: null,
                             content: '',
-                            error: 'Please enter a Company Name'
+                            error: ''
                         },
                         {
+                            name: 'dataLocation',
                             type: 'dataRequired',
                             validated: null,
                             content: '',
-                            error: 'Please enter a Data Location'
+                            error: ''
                         }
                     ],
                     validated: false,
@@ -170,6 +191,29 @@ export default {
                     show: false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'standard',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'setup',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'power',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        }
+                    ],
                     validated: false,
                 },
                 {
@@ -177,6 +221,29 @@ export default {
                     show:false,
                     isActive: false,
                     isFinished: false,
+                    formData: [
+                        {
+                            name: 'class_',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'lisn',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                        {
+                            name: 'specA',
+                            type: 'dataRequired',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        }
+                    ],
                     validated: false,
                 },
             ]
@@ -233,6 +300,7 @@ export default {
                     }
                     else{
                         field.validated = false;
+                        field.error = 'This field is required.'
                     }
                 }
                 // other types here
