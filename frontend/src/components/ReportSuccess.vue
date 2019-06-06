@@ -47,9 +47,7 @@
 
 <script>
 import axios from 'axios'
-
 export default {
-
     name: 'ReportSuccess',
     methods: {
         fileOpen(e){
@@ -61,28 +59,23 @@ export default {
 </script>
 
 <style scoped>
-
 button:hover{
     transform: scale(1);
 }
 .startContent{
     margin-top: 10px;
 }
-
 .startContent p, .startContent ul li{
     margin-top: 10px;
 }
-
 .startSubtitle{
     text-align: center;
     margin-bottom: 10px;
 }
-
  .startContainer{
     color:#0bab64;
     margin: 20px;
 }
-
 .colContainer{
     display: flex;
     flex-direction: column;
@@ -94,7 +87,6 @@ button:hover{
     grid-row-start: 1;
     grid-row-end: 5;
 }
-
 .title{
     margin: auto;
     display: flex;
@@ -105,7 +97,6 @@ button:hover{
     font-family: 'Oswald', sans-serif;
     font-size: 32pt;
 }
-
 .successButtonContainer{
     display: flex;
     justify-content: space-evenly;
@@ -113,7 +104,6 @@ button:hover{
     height: 100%;
     padding: 20px;
 }
-
 .homeButton{
     cursor: pointer;
     border-radius: 5px;
@@ -126,7 +116,6 @@ button:hover{
     height: 100%;
     box-shadow: 0 2px 2px -1px rgba(0,0,0,.2);
 }
-
 .sectionContainer{
   display: grid;
   grid-template-rows: repeat(4, 1fr);
@@ -140,19 +129,15 @@ button:hover{
   right: 0;
   bottom: 0;
 }
-
 .homeButton{
     transition: transform .2s;
 }
-
 .homeButton:hover{
     transform: scale(1.05);
 }
-
 .bigIcon{
     cursor: pointer;
     font-size: 62pt;
     color:#0bab64;
 }
 </style>
-
