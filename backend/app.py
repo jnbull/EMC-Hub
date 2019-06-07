@@ -1,7 +1,6 @@
 from flask import Flask, render_template, url_for, flash, redirect, request, jsonify
 from flask_cors import CORS
-# from forms import EFTForm, ESDForm, ReportForm
-# from verify import addEFTRecord, addESDRecord, createForm
+from verify import addEFTRecord, addESDRecord, createForm
 from report import Report, PLCE, Template, File
 import subprocess
 import json
@@ -28,7 +27,18 @@ def catch_all(path):
 # EMC Report Generation
 @app.route('/submit/report', methods = ['POST'])
 def submitReport():
+    print('fired')
     reportData = request.get_json()
+    product = reportData['productName']
+    company = reportData['companyName']
+    class_ = reportData['class_']
+    setup = reportData['setup']
+    data = reportData['dataLocation']
+    standard = reportData['standard']
+    equipment = {
+        'SpecA' : reportData['specA'],
+        'LISN' : reportData['lisn']
+    }
     print(reportData['productName'])
     print(reportData['companyName'])
     print(reportData['dataLocation'])
@@ -38,15 +48,49 @@ def submitReport():
     print(reportData['class_'])
     print(reportData['lisn'])
     print(reportData['specA'])
+
+    output = './assets/files/reportOutput.docx'
+    report = Report(product, company, class_, setup, data, standard, equipment, output, PLCE = PLCE)
+    report.reportOutput()
     return 'OK'
+
+@app.route('/submit/eftverification', methods = ['GET','POST'])
+def submitEFTVerification():
+    print('fired')
+    EFTData = request.get_json()
+
+    date = EFTData['date']
+    assetNumber = EFTData['asset']
+    engineer = EFTData['engineer']
+    formGeneration = EFTData['form']
+    peakValue = float(EFTData['peakValue'])
+    riseTime = float(EFTData['riseTime'])
+    fallTime = float(EFTData['fallTime'])
+    burstPeriod = float(EFTData['burstPeriod'])
+    burstDuration = float(EFTData['burstDuration'])
+    filesFolder = './assets/files/'
+    fileName = './assets/files/verificationOutput.docx'
+
+    print(EFTData['date'])
+    print(EFTData['engineer'])
+    print(EFTData['form'])
+    print(EFTData['asset'])
+    print(EFTData['peakValue'])
+    print(EFTData['riseTime'])
+    print(EFTData['fallTime'])
+    print(EFTData['burstPeriod'])
+    print(EFTData['burstDuration'])
+
+    addEFTRecord(date, assetNumber, engineer, peakValue, riseTime, fallTime, filesFolder)
+
+    if formGeneration == 'true':
+        createForm(date, assetNumber, engineer, peakValue, riseTime, fallTime, burstPeriod, burstDuration, filesFolder, fileName)
+
+    return jsonify('true')
 
 # File Explorer Open
 @app.route('/submit/fileopen', methods = ['POST'])
 def fileExplorer():
-    # openFolder = request.get_json()
-    # print(openFolder['fileOpen'])
-    # if openFolder['fileOpen'] == 'true':
-    print('fired')
     subprocess.call(['/usr/bin/open', '../../../EMC Hub Output'])
     return 'OK'
 

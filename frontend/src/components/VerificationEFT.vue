@@ -1,6 +1,6 @@
 <template>
     <!-- EMC Report Creation Form -->
-    <form @submit = 'formSubmit' autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
+    <form v-on:submit.prevent autocomplete = 'off' class = 'sectionContainer' method = 'POST'>
 
         <!-- Step 1 - Project Information -->
         <div class = 'colContainer'>
@@ -27,8 +27,14 @@
                         
                         <select name = 'engineer' class = 'customSelect' v-model= "windows[0].formData[1].content">
                             <option disabled value="">Select: </option>
-                            <option value = 'Raymond Au'>Raymond Au</option>
-                            <option value = 'Jadon Bull'>Jadon Bull</option>
+                            <option value = 'RA'>Raymond Au</option>
+                            <option value = 'JB'>Jadon Bull</option>
+                            <option value = 'AE'>Amir Emami</option>
+                            <option value = 'MM'>Marty McLear</option>
+                            <option value = 'JN'>James Nash</option>
+                            <option value = 'SV'>Sanjiv Vyas</option>
+                            <option value = 'MX'>Min Xie</option>
+                            
                         </select>
 
                         <p class = 'errorText' v-if = 'windows[0].formData[1].validated == false'>{{windows[0].formData[1].error}}</p>
@@ -375,17 +381,17 @@
                 </div>
             </div>
 
-            <div v-if = 'windows[8].show' class = 'formContentContainer'>
+            <!-- <div v-if = 'windows[8].show' class = 'formContentContainer'>
                 <h2>Submitting this form will delete the session.</h2>
                 <h2>Continue with submission?</h2>
-            </div>
+            </div> -->
 
             <!-- Form Navigation -->
             <div class = 'navButtonContainer'>
                 <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
                 <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
-                <button type = 'button' v-on:click = "nextPrev(1)" v-if = '!windows[7].validated && buttonSubmit'>Submit</button>
-                <router-link v-if = 'windows[7].validated' to = '/verifications/success'><button v-if = 'buttonSubmit'>Submit</button></router-link>
+                <button type = 'button' v-if = '!windows[7].validated && buttonSubmit' v-on:click = "validateWindow(windows[7])">Next</button>
+                <button v-on:click = 'formSubmit' @click="$router.push({name: 'VerificationSuccess'})" v-if = 'windows[7].validated && buttonSubmit'>Submit</button>
             </div>
 
             <!-- Form Step Bubbles -->
@@ -422,6 +428,7 @@ export default {
             buttonPrevious: false,
             buttonSubmit: false,
             buttonNext: true,
+            submitted: false,
             windows: [
                 {
                     id: 0,
@@ -444,14 +451,14 @@ export default {
                             error: ''
                         },
                         {
-                            name: 'generate',
+                            name: 'asset',
                             type: 'dataRequired',
                             validated: null,
                             content: '',
                             error: ''
                         },
                         {
-                            name: 'asset',
+                            name: 'form',
                             type: 'dataRequired',
                             validated: null,
                             content: '',
@@ -593,23 +600,23 @@ export default {
                     validated: false,
                     subtitle: 'Burst Duration Measurement'
                 },
-                {
-                    id: 8,
-                    show:false,
-                    isActive: false,
-                    isFinished: false,
-                    formData: [
-                        {
-                            name: 'submission',
-                            type: 'noValidation',
-                            validated: null,
-                            content: '',
-                            error: ''
-                        },
-                    ],
-                    validated: false,
-                    subtitle: 'Submit Message'
-                },
+                // {
+                //     id: 8,
+                //     show:false,
+                //     isActive: false,
+                //     isFinished: false,
+                //     formData: [
+                //         {
+                //             name: 'submission',
+                //             type: 'noValidation',
+                //             validated: null,
+                //             content: '',
+                //             error: ''
+                //         },
+                //     ],
+                //     validated: false,
+                //     subtitle: 'Submit Message'
+                // },
             ]
             
         }
@@ -696,20 +703,25 @@ export default {
             }
         },
 
-        formSubmit(e){
-            e.preventDefault();
+        formSubmit(){
+            // e.preventDefault();
+            console.log('form submitted')
             axios.post('http://localhost:5000/submit/eftverification', {
-                date : this.windows[0].formData[0].date,
-                engineer : this.windows[0].formData[1].engineer,
-                form : this.windows[0].formData[2].generate,
-                asset : this.windows[0].formData[3].asset,
-                peakValue : this.windows[3].formData[0].peakValue,
-                riseTime : this.windows[4].formData[0].riseTime,
-                fallTime : this.windows[5].formData[0].fallTime,
-                burstPeriod : this.windows[6].formData[0].burstPeriod,
-                burstDuration : this.windows[7].formData[0].burstDuration,
+                date : this.windows[0].formData[0].content,
+                engineer : this.windows[0].formData[1].content,
+                form : this.windows[0].formData[3].content,
+                asset : this.windows[0].formData[2].content,
+                peakValue : this.windows[3].formData[0].content,
+                riseTime : this.windows[4].formData[0].content,
+                fallTime : this.windows[5].formData[0].content,
+                burstPeriod : this.windows[6].formData[0].content,
+                burstDuration : this.windows[7].formData[0].content,
                 })
         },
+
+        // submitSuccess(){
+        //     this.submitted = axios.get('http://localhost:5000/submit/eftverification')
+        // },
 
         calculatePeaks(){
             this.windows[4].peak10 = (this.windows[3].formData[0].content * 0.10) + 'V'; 
@@ -899,10 +911,6 @@ button{
     text-align: center;
     cursor: pointer;
     transition: transform .2s;
-}
-
-.greyed{
-    opacity: 0.5;
 }
 
 .stepContainer{
