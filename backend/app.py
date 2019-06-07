@@ -31,7 +31,13 @@ def submitReport():
     reportData = request.get_json()
     print(reportData['productName'])
     print(reportData['companyName'])
-    print(reportData['data'])
+    print(reportData['dataLocation'])
+    print(reportData['standard'])
+    print(reportData['setup'])
+    print(reportData['power'])
+    print(reportData['class_'])
+    print(reportData['lisn'])
+    print(reportData['specA'])
     return 'OK'
 
 # File Explorer Open

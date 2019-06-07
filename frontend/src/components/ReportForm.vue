@@ -43,9 +43,11 @@
             
                         <select name = 'standard' class = 'customSelect' v-model= "windows[1].formData[0].content">
                             <option disabled value="">Select: </option>
-                            <option value = 'CISPR 11'>CISPR 11</option>
-                            <option value = 'CISPR 32'>CISPR 32</option>
-                            <option value = 'FCC'>FCC</option>
+                            <option value = '../assets/reports/CISPR11.docx'>CISPR 11</option>
+                            <option value = '../assets/reports/CISPR11-FCC.docx'>CISPR 11 & FCC</option>
+                            <option value = '../assets/reports/CISPR32.docx'>CISPR 32</option>
+                            <option value = '../assets/reports/CISPR32-FCC.docx'>CISPR 32 & FCC</option>
+                            <option value = '../assets/reports/FCC.docx'>FCC</option>
                         </select>
 
                         <p class = 'errorText' v-if = 'windows[1].formData[0].validated == false'>{{windows[1].formData[0].error}}</p>
@@ -56,7 +58,7 @@
 
                         <select name = 'setup' class = 'customSelect' v-model= "windows[1].formData[1].content">
                             <option disabled value="">Select: </option>
-                            <option value = 'Table Top'>Table Top</option>
+                            <option value = 'Table-Top'>Table Top</option>
                             <option value = 'Floor Standing'>Floor Standing</option>
                         </select>
 
@@ -83,8 +85,8 @@
 
                         <select name = 'class_' class = 'customSelect' v-model= "windows[2].formData[0].content">
                             <option disabled value="">Select: </option>
-                            <option>Class A</option>
-                            <option>Class B</option>
+                            <option value = 'Class A'>Class A</option>
+                            <option value = 'Class B'>Class B</option>
                         </select>
 
                         <p class = 'errorText' v-if = 'windows[2].formData[0].validated == false'>{{windows[2].formData[0].error}}</p>
@@ -95,8 +97,8 @@
 
                         <select name = 'lisn' class = 'customSelect' v-model= "windows[2].formData[1].content">
                             <option disabled value="">Select: </option>
-                            <option value = 'GEMC 302'>GEMC 302</option>
-                            <option value = 'GEMC 303'>GEMC 303</option>
+                            <option value = 'GEMC 302'>LISN 302</option>
+                            <option value = 'GEMC 303'>LISN 303</option>
                         </select>
 
                         <p class = 'errorText' v-if = 'windows[2].formData[1].validated == false'>{{windows[2].formData[1].error}}</p>
@@ -107,8 +109,8 @@
 
                         <select name = 'specA' class = 'customSelect' v-model= "windows[2].formData[2].content">
                             <option disabled value="">Select: </option>
-                            <option value = 'GEMC 160'>GEMC 160</option>
-                            <option value = 'GEMC XXX'>GEMC XXX</option>
+                            <option value = 'GEMC 160'>ESL 6</option>
+                            <option value = 'GEMC 198'>FSU 3</option>
                         </select>
 
                         <p class = 'errorText' v-if = 'windows[2].formData[2].validated == false'>{{windows[2].formData[2].error}}</p>
@@ -313,13 +315,17 @@ export default {
 
         formSubmit(e){
             e.preventDefault();
-            axios.post('http://localhost:5000/submit/report', {productName: this.formData.productName, companyName: this.formData.companyName, data: this.formData.data})
-            // .then(res => {
-            //     this.productName = ''
-            // })
-            // .catch(err => {
-            //     console.log(err)
-            // })
+            axios.post('http://localhost:5000/submit/report', {
+                productName: this.windows[0].formData[0].productName, 
+                companyName: this.windows[0].formData[1].companyName, 
+                dataLocation: this.windows[0].formData[2].dataLocation,
+                standard: this.windows[1].formData[0].standard,
+                setup: this.windows[1].formData[1].setup,
+                power: this.windows[1].formData[2].power,
+                class_: this.windows[2].formData[0].class_,
+                lisn: this.windows[2].formData[1].lisn,
+                specA: this.windows[2].formData[2].specA,
+                })
         }
 
     }

@@ -13,6 +13,7 @@ import VerificationLanding from '@/components/VerificationLanding'
 import VerificationCreation from '@/components/VerificationCreation'
 import VerificationTests from '@/components/VerificationTests'
 import VerificationEFT from '@/components/VerificationEFT'
+import VerificationSuccess from '@/components/VerificationSuccess'
 
 Vue.use(Router)
 
@@ -63,6 +64,11 @@ export default new Router({
       path: '/verifications/create/testsetup/eft',
       name: 'VerificationEFT',
       component: VerificationEFT
+    },
+    {
+      path: '/verifications/success',
+      name: 'VerificationSuccess',
+      component: VerificationSuccess
     }
   ]
 })

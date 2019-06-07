@@ -361,26 +361,31 @@
                             Record the delta time value as Burst Duration below:
                         </li>
 
-                    <div>
-                        <input placeholder = 'Burst Duration: 240ms - 360ms' v-model = 'windows[7].formData[0].content' class = 'formField' type="text" name = 'burstDuration'>
-                        <p class = 'errorText' v-if = 'windows[7].formData[0].validated == false'>{{windows[7].formData[0].error}}</p>
+                        <div>
+                            <input placeholder = 'Burst Duration: 240ms - 360ms' v-model = 'windows[7].formData[0].content' class = 'formField' type="text" name = 'burstDuration'>
+                            <p class = 'errorText' v-if = 'windows[7].formData[0].validated == false'>{{windows[7].formData[0].error}}</p>
+                        </div>
+                        
+
+                    </ol>
+
+                    <div class = 'setupPhoto-R'>
+                        <img src="../assets/EFT_BD.png" alt="EFT Burst Duration" height= '326.4' width= '435.2'>
                     </div>
-                    
-
-                </ol>
-
-                <div class = 'setupPhoto-R'>
-                    <img src="../assets/EFT_BD.png" alt="EFT Burst Duration" height= '326.4' width= '435.2'>
                 </div>
-                </div>
-                
+            </div>
+
+            <div v-if = 'windows[8].show' class = 'formContentContainer'>
+                <h2>Submitting this form will delete the session.</h2>
+                <h2>Continue with submission?</h2>
             </div>
 
             <!-- Form Navigation -->
             <div class = 'navButtonContainer'>
                 <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
                 <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
-                <router-link to = '/verifications/success'><button v-if = 'buttonSubmit'>Submit</button></router-link>
+                <button type = 'button' v-on:click = "nextPrev(1)" v-if = '!windows[7].validated && buttonSubmit'>Submit</button>
+                <router-link v-if = 'windows[7].validated' to = '/verifications/success'><button v-if = 'buttonSubmit'>Submit</button></router-link>
             </div>
 
             <!-- Form Step Bubbles -->
@@ -412,16 +417,6 @@ export default {
     name: 'VerificationForm',
     data() {
         return{
-            formData: {
-                peak: "",
-                peak10: "",
-                peak90: "",
-                peak50: "",
-                riseTime: '',
-                fallTime: '',
-                burstPeriod: '',
-                burstDuration: ''
-            },
             subtitle: 'EFT Verification',
             currentWindow: 0,
             buttonPrevious: false,
@@ -598,6 +593,23 @@ export default {
                     validated: false,
                     subtitle: 'Burst Duration Measurement'
                 },
+                {
+                    id: 8,
+                    show:false,
+                    isActive: false,
+                    isFinished: false,
+                    formData: [
+                        {
+                            name: 'submission',
+                            type: 'noValidation',
+                            validated: null,
+                            content: '',
+                            error: ''
+                        },
+                    ],
+                    validated: false,
+                    subtitle: 'Submit Message'
+                },
             ]
             
         }
@@ -686,13 +698,17 @@ export default {
 
         formSubmit(e){
             e.preventDefault();
-            axios.post('http://localhost:5000/submit/eftverification')
-            // .then(res => {
-            //     this.productName = ''
-            // })
-            // .catch(err => {
-            //     console.log(err)
-            // })
+            axios.post('http://localhost:5000/submit/eftverification', {
+                date : this.windows[0].formData[0].date,
+                engineer : this.windows[0].formData[1].engineer,
+                form : this.windows[0].formData[2].generate,
+                asset : this.windows[0].formData[3].asset,
+                peakValue : this.windows[3].formData[0].peakValue,
+                riseTime : this.windows[4].formData[0].riseTime,
+                fallTime : this.windows[5].formData[0].fallTime,
+                burstPeriod : this.windows[6].formData[0].burstPeriod,
+                burstDuration : this.windows[7].formData[0].burstDuration,
+                })
         },
 
         calculatePeaks(){
@@ -706,6 +722,10 @@ export default {
 </script>
 
 <style scoped>
+
+h2{
+    display:block
+}
 
 i{
     font-size: 48pt;
@@ -881,6 +901,9 @@ button{
     transition: transform .2s;
 }
 
+.greyed{
+    opacity: 0.5;
+}
 
 .stepContainer{
     text-align: center;
