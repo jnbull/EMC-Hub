@@ -57,37 +57,37 @@ def submitReport():
 
 @app.route('/submit/eftverification', methods = ['GET','POST'])
 def submitEFTVerification():
-    print('fired')
-    EFTData = request.get_json()
+    if request.method == 'POST':
+        EFTData = request.get_json()
 
-    date = EFTData['date']
-    assetNumber = EFTData['asset']
-    engineer = EFTData['engineer']
-    formGeneration = EFTData['form']
-    peakValue = float(EFTData['peakValue'])
-    riseTime = float(EFTData['riseTime'])
-    fallTime = float(EFTData['fallTime'])
-    burstPeriod = float(EFTData['burstPeriod'])
-    burstDuration = float(EFTData['burstDuration'])
-    filesFolder = './assets/files/'
-    fileName = './assets/files/verificationOutput.docx'
+        date = EFTData['date']
+        assetNumber = EFTData['asset']
+        engineer = EFTData['engineer']
+        formGeneration = EFTData['form']
+        peakValue = float(EFTData['peakValue'])
+        riseTime = float(EFTData['riseTime'])
+        fallTime = float(EFTData['fallTime'])
+        burstPeriod = float(EFTData['burstPeriod'])
+        burstDuration = float(EFTData['burstDuration'])
+        filesFolder = './assets/files/'
+        fileName = './assets/files/verificationOutput.docx'
 
-    print(EFTData['date'])
-    print(EFTData['engineer'])
-    print(EFTData['form'])
-    print(EFTData['asset'])
-    print(EFTData['peakValue'])
-    print(EFTData['riseTime'])
-    print(EFTData['fallTime'])
-    print(EFTData['burstPeriod'])
-    print(EFTData['burstDuration'])
+        print(EFTData['date'])
+        print(EFTData['engineer'])
+        print(EFTData['form'])
+        print(EFTData['asset'])
+        print(EFTData['peakValue'])
+        print(EFTData['riseTime'])
+        print(EFTData['fallTime'])
+        print(EFTData['burstPeriod'])
+        print(EFTData['burstDuration'])
 
-    addEFTRecord(date, assetNumber, engineer, peakValue, riseTime, fallTime, filesFolder)
+        addEFTRecord(date, assetNumber, engineer, peakValue, riseTime, fallTime, filesFolder)
 
-    if formGeneration == 'true':
-        createForm(date, assetNumber, engineer, peakValue, riseTime, fallTime, burstPeriod, burstDuration, filesFolder, fileName)
+        if formGeneration == 'true':
+            createForm(date, assetNumber, engineer, peakValue, riseTime, fallTime, burstPeriod, burstDuration, filesFolder, fileName)
 
-    return 'OK'
+        return 'Finished'
 
 # File Explorer Open
 @app.route('/submit/fileopen', methods = ['POST'])

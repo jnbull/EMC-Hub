@@ -12,7 +12,7 @@
             <hr>
 
             <!-- Form Layout Tab -->
-            <div class = 'formContainer'>
+            <div v-if = '!loading' class = 'formContainer'>
 
                 <!-- Form Content -->
                 <div v-if = 'windows[0].show' class = 'window'>
@@ -387,7 +387,7 @@
             </div> -->
 
             <!-- Form Navigation -->
-            <div class = 'navButtonContainer'>
+            <div v-if = '!loading' class = 'navButtonContainer'>
                 <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
                 <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
                 <button type = 'button' v-if = '!windows[7].validated && buttonSubmit' v-on:click = "validateWindow(windows[7])">Next</button>
@@ -395,7 +395,7 @@
             </div>
 
             <!-- Form Step Bubbles -->
-            <div class = 'stepContainer'>
+            <div v-if = '!loading' class = 'stepContainer'>
                 <span v-bind:class = "{active: windows[0].isActive, finish: windows[0].isFinished}" class="step"></span>
                 <span v-bind:class = "{active: windows[1].isActive, finish: windows[1].isFinished}" class="step"></span>
                 <span v-bind:class = "{active: windows[2].isActive, finish: windows[2].isFinished}" class="step"></span>
@@ -406,7 +406,7 @@
                 <span v-bind:class = "{active: windows[7].isActive, finish: windows[7].isFinished}" class="step"></span>
             </div>
 
-            <div id = 'loadingScreen' class = 'formContainer'>
+            <div v-if = 'loading' class = 'formContainer'>
                 <span id = 'loadingOne' class="loading"></span>
                 <span id = 'loadingTwo' class="loading"></span>
                 <span id = 'loadingThree' class="loading"></span>
@@ -429,6 +429,8 @@ export default {
             buttonSubmit: false,
             buttonNext: true,
             submitted: false,
+            loading: false,
+            status: '',
             windows: [
                 {
                     id: 0,
@@ -600,23 +602,6 @@ export default {
                     validated: false,
                     subtitle: 'Burst Duration Measurement'
                 },
-                // {
-                //     id: 8,
-                //     show:false,
-                //     isActive: false,
-                //     isFinished: false,
-                //     formData: [
-                //         {
-                //             name: 'submission',
-                //             type: 'noValidation',
-                //             validated: null,
-                //             content: '',
-                //             error: ''
-                //         },
-                //     ],
-                //     validated: false,
-                //     subtitle: 'Submit Message'
-                // },
             ]
             
         }
@@ -703,8 +688,11 @@ export default {
             }
         },
 
-        formSubmit(){
-            // e.preventDefault();
+        formSubmit(e){
+            this.loading = true;
+            this.subtitle = 'Loading...';
+            console.log(this.loading);
+            e.preventDefault();
             axios.post('http://localhost:5000/submit/eftverification', {
                 date : this.windows[0].formData[0].content,
                 engineer : this.windows[0].formData[1].content,
@@ -716,8 +704,16 @@ export default {
                 burstPeriod : this.windows[6].formData[0].content,
                 burstDuration : this.windows[7].formData[0].content,
                 })
-            this.submitted = axios.get('http://localhost:5000/submit/eftverification')
-            console.log(this.submitted)
+            .then(response => {this.formSuccess(response.data)})
+        },
+
+        formSuccess(response){
+            if (response == 'Finished'){
+                this.$router.replace('/verifications/success');
+            }
+            else{
+                console.log('Failed');
+            }
         },
 
         calculatePeaks(){
