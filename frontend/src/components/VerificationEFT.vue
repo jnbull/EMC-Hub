@@ -705,7 +705,6 @@ export default {
 
         formSubmit(){
             // e.preventDefault();
-            console.log('form submitted')
             axios.post('http://localhost:5000/submit/eftverification', {
                 date : this.windows[0].formData[0].content,
                 engineer : this.windows[0].formData[1].content,
@@ -717,11 +716,9 @@ export default {
                 burstPeriod : this.windows[6].formData[0].content,
                 burstDuration : this.windows[7].formData[0].content,
                 })
+            this.submitted = axios.get('http://localhost:5000/submit/eftverification')
+            console.log(this.submitted)
         },
-
-        // submitSuccess(){
-        //     this.submitted = axios.get('http://localhost:5000/submit/eftverification')
-        // },
 
         calculatePeaks(){
             this.windows[4].peak10 = (this.windows[3].formData[0].content * 0.10) + 'V'; 

@@ -25,34 +25,35 @@ def catch_all(path):
 # APIS
 
 # EMC Report Generation
-@app.route('/submit/report', methods = ['POST'])
+@app.route('/submit/report', methods = ['GET','POST'])
 def submitReport():
-    print('fired')
-    reportData = request.get_json()
-    product = reportData['productName']
-    company = reportData['companyName']
-    class_ = reportData['class_']
-    setup = reportData['setup']
-    data = reportData['dataLocation']
-    standard = reportData['standard']
-    equipment = {
-        'SpecA' : reportData['specA'],
-        'LISN' : reportData['lisn']
-    }
-    print(reportData['productName'])
-    print(reportData['companyName'])
-    print(reportData['dataLocation'])
-    print(reportData['standard'])
-    print(reportData['setup'])
-    print(reportData['power'])
-    print(reportData['class_'])
-    print(reportData['lisn'])
-    print(reportData['specA'])
+    if request.method == 'POST':
+        reportData = request.get_json()
+        product = reportData['productName']
+        company = reportData['companyName']
+        class_ = reportData['class_']
+        setup = reportData['setup']
+        data = reportData['dataLocation']
+        standard = reportData['standard']
+        equipment = {
+            'SpecA' : reportData['specA'],
+            'LISN' : reportData['lisn']
+        }
+        print(reportData['productName'])
+        print(reportData['companyName'])
+        print(reportData['dataLocation'])
+        print(reportData['standard'])
+        print(reportData['setup'])
+        print(reportData['power'])
+        print(reportData['class_'])
+        print(reportData['lisn'])
+        print(reportData['specA'])
 
-    output = './assets/files/reportOutput.docx'
-    report = Report(product, company, class_, setup, data, standard, equipment, output, PLCE = PLCE)
-    report.reportOutput()
-    return 'OK'
+        output = './assets/files/reportOutput.docx'
+        report = Report(product, company, class_, setup, data, standard, equipment, output, PLCE = PLCE)
+        report.reportOutput()
+
+        return 'Finished'
 
 @app.route('/submit/eftverification', methods = ['GET','POST'])
 def submitEFTVerification():
@@ -86,7 +87,7 @@ def submitEFTVerification():
     if formGeneration == 'true':
         createForm(date, assetNumber, engineer, peakValue, riseTime, fallTime, burstPeriod, burstDuration, filesFolder, fileName)
 
-    return jsonify('true')
+    return 'OK'
 
 # File Explorer Open
 @app.route('/submit/fileopen', methods = ['POST'])

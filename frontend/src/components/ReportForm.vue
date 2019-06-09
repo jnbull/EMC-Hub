@@ -8,12 +8,12 @@
 
             <!-- Subtitle -->
             <div class = 'subtitle'>
-                Project Information
+                {{subtitle}}
             </div>
             <hr>
 
             <!-- Form Layout Tab -->
-            <div class = 'formContainer'>
+            <div v-if = '!loading' class = 'formContainer'>
 
                 <!-- Form Content -->
                 <div v-if = 'windows[0].show' class = 'formContentContainer'>
@@ -118,34 +118,28 @@
                     
     
                 </div>
-
-                <!-- <div v-if = 'windows[3].show' class = 'formContentContainer'>
-                    <h2>Submitting this form will delete the session.</h2>
-                    <h2>Continue with submission?</h2>
-                </div> -->
             </div>
 
             <!-- Form Navigation -->
-            <div class = 'navButtonContainer'>
+            <div v-if = '!loading' class = 'navButtonContainer'>
                 <button type = 'button' v-on:click = "nextPrev(-1)" v-if = 'buttonPrevious'>Previous</button>
                 <button type = 'button' v-on:click = "nextPrev(1)" v-if = 'buttonNext'>Next</button>
                 <button type = 'button' v-if = '!windows[2].validated && buttonSubmit' v-on:click = "validateWindow(windows[2])">Next</button>
-                <button v-on:click = 'formSubmit' @click="$router.push({name: 'ReportSuccess'})" v-if = 'windows[2].validated && buttonSubmit'>Submit</button>
+                <button v-on:click = 'formSubmit' v-if = 'windows[2].validated && buttonSubmit'>Submit</button>
             </div>
 
             <!-- Form Step Bubbles -->
-            <div class = 'stepContainer'>
+            <div v-if = '!loading' class = 'stepContainer'>
                 <span v-bind:class = "{active: windows[0].isActive, finish: windows[0].isFinished}" class="step"></span>
                 <span v-bind:class = "{active: windows[1].isActive, finish: windows[1].isFinished}" class="step"></span>
                 <span v-bind:class = "{active: windows[2].isActive, finish: windows[2].isFinished}" class="step"></span>
             </div>
 
-            <div id = 'loadingScreen' class = 'formContainer'>
+            <div v-if = 'loading' class = 'formContainer'>
                 <span id = 'loadingOne' class="loading"></span>
                 <span id = 'loadingTwo' class="loading"></span>
                 <span id = 'loadingThree' class="loading"></span>
             </div>
-
         </div>
     </form>
 </template>
@@ -162,7 +156,9 @@ export default {
             buttonPrevious: false,
             buttonSubmit: false,
             buttonNext: true,
-            submitted: false,
+            subtitle: 'Project Information',
+            loading: false,
+            status: '',
             windows: [
                 {
                     id: 0,
@@ -254,23 +250,6 @@ export default {
                     ],
                     validated: false,
                 },
-                // {
-                //     id: 3,
-                //     show:false,
-                //     isActive: false,
-                //     isFinished: false,
-                //     formData: [
-                //         {
-                //             name: 'submission',
-                //             type: 'noValidation',
-                //             validated: null,
-                //             content: '',
-                //             error: ''
-                //         },
-                //     ],
-                //     validated: false,
-                //     subtitle: 'Submit Message'
-                // }
             ]
             
         }
@@ -328,8 +307,6 @@ export default {
                         field.error = 'This field is required.'
                     }
                 }
-
-                // other types here
             }
 
             if (counter == window.formData.length){
@@ -338,9 +315,9 @@ export default {
         },
 
         formSubmit(e){
+            this.loading = true;
+            this.subtitle = 'Loading...';
             e.preventDefault();
-            console.log('form submitted');
-            console.log(this.windows[0].formData[0].content);
             axios.post('http://localhost:5000/submit/report', {
                 productName: this.windows[0].formData[0].content, 
                 companyName: this.windows[0].formData[1].content, 
@@ -352,12 +329,17 @@ export default {
                 lisn: this.windows[2].formData[1].content,
                 specA: this.windows[2].formData[2].content,
                 })
+            .then(response => {this.formSuccess(response.data)})
         },
 
-        // submitSuccess(){
-        //     this.submitted = axios.get('http://localhost:5000/submit/report')
-        // },
-
+        formSuccess(response){
+            if (response == 'Finished'){
+                this.$router.replace('/reports/success');
+            }
+            else{
+                console.log('Failed');
+            }
+        }
     }
 }
 </script>
@@ -506,12 +488,6 @@ button{
 
 .step.finish {
     background-color: #0bab64;
-}
-
-#loadingScreen{
-    display: none;
-    flex-direction: row;
-    justify-content: center;
 }
 
 .loading{

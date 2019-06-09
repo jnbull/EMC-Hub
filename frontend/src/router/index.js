@@ -69,6 +69,6 @@ export default new Router({
       path: '/verifications/success',
       name: 'VerificationSuccess',
       component: VerificationSuccess
-    }
+    },
   ]
 })
