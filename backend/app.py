@@ -49,7 +49,7 @@ def submitReport():
         print(reportData['lisn'])
         print(reportData['specA'])
 
-        output = './assets/files/reportOutput.docx'
+        output = '/Users/jadonbull/Documents/EMC Hub Output/EMC Reports/' + product + '.docx'
         report = Report(product, company, class_, setup, data, standard, equipment, output, PLCE = PLCE)
         report.reportOutput()
 
