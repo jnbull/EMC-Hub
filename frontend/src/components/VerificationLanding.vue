@@ -10,9 +10,17 @@
         <!-- Report Widget 1 -->
         <div class = 'colContainer widgetOne'>
             <div class = 'subtitle'>
-                Verification Widget 1
+                My Verification List
+                <div class = 'plusIconSml'>
+                    <font-awesome-icon icon = 'plus'/>
+                </div>
             </div>
             <hr>
+            <div class = 'todoContainer'>
+                <div class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
+                    <p >{{todo.title}}</p>
+                </div>
+            </div>
         </div>
 
         <!-- Report Widget 2 -->
@@ -36,11 +44,49 @@
 
 <script>
 export default {
-    name: 'VerificationLanding'
+    name: 'VerificationLanding',
+     data(){
+        return {
+            todos: [
+                {
+                id: 1,
+                category: 'Individual Equipment',
+                title: 'GEMC 125',
+                completed: false
+                },
+                {
+                id: 2,
+                category: 'Individual Equipment',
+                title: 'GEMC 19',
+                completed: false
+                },
+                {
+                id: 3,
+                category: 'Test Setup',
+                title: 'EFT',
+                completed: false
+                }
+            ]
+        }
+  }
 }
 </script>
 
 <style scoped>
+
+.todoContainer{
+    margin: 20px 20px;
+    border-radius: 5px;
+    background-color:#f4f4f4;
+}
+.todoItem{
+    padding: 10px;
+    /* border-bottom: 1px #ccc dotted; */
+}
+
+.completed{
+    background-color:#3bb78f;
+}
 
 .sectionContainer{
     display: grid;
@@ -81,6 +127,14 @@ export default {
 .plusIcon{
     font-size: 48pt;
     color: whitesmoke;
+    text-align: right;
+    margin-left: auto;
+}
+
+.plusIconSml{
+    font-size: 14pt;
+    color: #34495e;
+    margin-left: auto;
 }
 
 .plusIconContainer:hover{
@@ -109,6 +163,9 @@ export default {
 }
 
 .subtitle{
+    display: flex;
+    justify-content: flex-start;
+    display: relative;
     color: black;
     margin-left: 10px;
     padding: 15px;
