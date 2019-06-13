@@ -4,12 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faFolderOpen, faFileAlt, faClipboardCheck, faThermometerHalf, faAngleRight, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faFolderOpen, faFileAlt, faClipboardCheck, faThermometerHalf, faAngleRight, faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.config.productionTip = false;
 
-library.add(faFolderOpen, faFileAlt, faClipboardCheck, faThermometerHalf, faAngleRight, faPlus);
+library.add(faFolderOpen, faFileAlt, faClipboardCheck, faThermometerHalf, faAngleRight, faAngleLeft, faPlus);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /* eslint-disable no-new */

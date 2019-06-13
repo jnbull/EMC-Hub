@@ -500,7 +500,7 @@ class PLCE(Template):
                         p = paragraphs[i + 1]._insert_paragraph_before()
                         r = p.add_run()
                         r.add_break(WD_BREAK.LINE)
-                        r.add_picture('./static/images/FloorStanding.png', width=Cm(12.32), height=Cm(8.05))
+                        r.add_picture('./assets/images/FloorStanding.png', width=Cm(12.32), height=Cm(8.05))
                         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
                         self._deleteParagraph(paragraphs[i + 2])
                         self._deleteParagraph(paragraphs[i + 3])
