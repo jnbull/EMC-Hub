@@ -2,9 +2,6 @@ from docx import Document
 import zipfile
 from bs4 import BeautifulSoup
 
-filename = './assets/files/Offsite Equipment List - VD1.0.docx'
-
-
 
 def parseChecklist(checklist):
     # Open as XML
@@ -243,6 +240,4 @@ def dropdownHandler(assetList):
         else:
             finalsList.append(item['asset'])
     
-    return(set(finalsList))
-
-print(dropdownHandler(parseChecklist(filename)))
+    return(finalsList)

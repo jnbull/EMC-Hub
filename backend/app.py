@@ -2,8 +2,14 @@ from flask import Flask, render_template, url_for, flash, redirect, request, jso
 from flask_cors import CORS
 from verify import addEFTRecord, addESDRecord, createForm
 from report import Report, PLCE, Template, File
+from offsiteList import parseChecklist, dropdownHandler
+from werkzeug import secure_filename
 import subprocess
 import json
+import os
+
+UPLOAD_FOLDER = './assets/files'
+ALLOWED_EXTENSIONS = set(['docx'])
 
 app = Flask(__name__,
             static_folder = '../dist/static',
@@ -11,6 +17,8 @@ app = Flask(__name__,
             )
 CORS(app)
 app.config['SECRET_KEY'] = 'N7SDGLAK293JBDGALKDF99H1K3B'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 # Views
 
@@ -55,6 +63,7 @@ def submitReport():
 
         return 'Finished'
 
+# EFT Verification
 @app.route('/submit/eftverification', methods = ['GET','POST'])
 def submitEFTVerification():
     if request.method == 'POST':
@@ -88,6 +97,16 @@ def submitEFTVerification():
             createForm(date, assetNumber, engineer, peakValue, riseTime, fallTime, burstPeriod, burstDuration, filesFolder, fileName)
 
         return 'Finished'
+
+# Offsite List Upload
+@app.route('/submit/offsiteList', methods = ['POST'])
+def uploadList():
+    if request.method == 'POST':
+        f = request.files['file']
+        filename = f.filename
+        filename = secure_filename(filename)
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return jsonify(dropdownHandler(parseChecklist(os.path.join(app.config['UPLOAD_FOLDER'], filename))))
 
 # File Explorer Open
 @app.route('/submit/fileopen', methods = ['POST'])

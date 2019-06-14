@@ -35,16 +35,17 @@
             </div>
 
             <div class = 'navButtonContainer'>
-                <button>Verify Selected</button>
+                <input v-on:change = 'handleFileUpload()' ref = 'file' type='file'>
+                <button v-on:click = 'submitFile()'>Verify Selected</button>
             </div>
         </div>
 
         <!-- Report Widget 2 -->
         <div class = 'colContainer widgetTwo'>
-            <div class = 'subtitle'>
+            <!-- <div class = 'subtitle'>
                 Next Verification Due
             </div>
-            <hr>
+            <hr> -->
         </div>
 
         <!-- Report Widget 3 -->
@@ -59,10 +60,13 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name: 'VerificationLanding',
      data(){
         return {
+            file: '',
             todos: [
                 {
                 id: 1,
@@ -87,6 +91,34 @@ export default {
                 }
             ]
         }
+  },
+  methods: {
+      handleFileUpload(){
+          this.file = this.$refs.file.files[0];
+      },
+      submitFile(){
+          let formData = new FormData();
+          formData.append('file', this.file);
+          axios.post('http://localhost:5000/submit/offsiteList',formData, {
+              headers:{
+                  'Content-Type': 'multipart/form-data'
+              }
+          })
+          .then(response => {this.addItem(response.data)})
+      },
+      addItem(assetList){
+          const unique = [...new Set(assetList)]
+          for (const item of unique){
+              const newTodo = {
+                  id: '',
+                  category: 'Dummy',
+                  type: 'Dummy',
+                  title: item,
+                  completed: false
+              }
+              this.todos = [...this.todos, newTodo]
+          }
+      }
   }
 }
 </script>
