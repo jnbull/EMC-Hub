@@ -10,23 +10,39 @@
         <!-- Report Widget 1 -->
         <div class = 'colContainer widgetOne'>
             <div class = 'subtitle'>
-                My Verification List
+                <div class = 'barsIconSml'>
+                    <font-awesome-icon icon = 'bars'/>
+                </div>
+
+                <div>
+                    My Verification List
+                </div>
+                
                 <div class = 'plusIconSml'>
                     <font-awesome-icon icon = 'plus'/>
                 </div>
             </div>
-            <hr>
+
             <div class = 'todoContainer'>
                 <div class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
-                    <p >{{todo.title}}</p>
+                    <div class = 'todo checkContainer'>
+                        <input class = 'check' type="checkbox">
+                    </div>
+                    <div class = 'todo'>{{todo.title}}</div>
+                    <div class = 'todo'>{{todo.type}}</div>
+                    <div class = 'todo'>{{todo.category}}</div>
                 </div>
+            </div>
+
+            <div class = 'navButtonContainer'>
+                <button>Verify Selected</button>
             </div>
         </div>
 
         <!-- Report Widget 2 -->
         <div class = 'colContainer widgetTwo'>
             <div class = 'subtitle'>
-                Verification Widget 2
+                Next Verification Due
             </div>
             <hr>
         </div>
@@ -34,7 +50,7 @@
         <!-- Report Widget 3 -->
         <div class = 'colContainer widgetThree'>
             <div class = 'subtitle'>
-                Verification Widget 3
+                My Requests
             </div>
             <hr>
         </div>
@@ -51,17 +67,20 @@ export default {
                 {
                 id: 1,
                 category: 'Individual Equipment',
+                type: 'Current Probe',
                 title: 'GEMC 125',
                 completed: false
                 },
                 {
                 id: 2,
+                type: 'Current Probe',
                 category: 'Individual Equipment',
                 title: 'GEMC 19',
                 completed: false
                 },
                 {
                 id: 3,
+                type: 'Immunity',
                 category: 'Test Setup',
                 title: 'EFT',
                 completed: false
@@ -74,14 +93,31 @@ export default {
 
 <style scoped>
 
-.todoContainer{
-    margin: 20px 20px;
-    border-radius: 5px;
-    background-color:#f4f4f4;
+.todo{
+    width: 175px;
+    display: inline-block;
+    padding: 10px;
+    border-left: lightgray 2px solid;
+}
+
+.checkContainer{
+    width: 35px;
+    text-align: center;
+    border: none;
+    padding: 0px;
+}
+
+.check{
+    zoom: 1.5;
+    margin-left: 4px;
 }
 .todoItem{
-    padding: 10px;
-    /* border-bottom: 1px #ccc dotted; */
+    border-bottom: lightgray solid 2px;
+}
+
+.todoItem:hover{
+    background-color: lightgray;
+    cursor: pointer;
 }
 
 .completed{
@@ -133,12 +169,26 @@ export default {
 
 .plusIconSml{
     font-size: 14pt;
-    color: #34495e;
+    color: whitesmoke;
     margin-left: auto;
+    cursor: pointer;
+    transition: transform .2s;
 }
 
-.plusIconContainer:hover{
+.barsIconSml{
+    font-size: 14pt;
+    color: whitesmoke;
+    margin-right: auto;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.plusIconContainer:hover, button:hover{
     transform: scale(1.05);
+}
+
+.plusIconSml:hover, .barsIconSml:hover{
+    transform: scale(1.15);
 }
 
 .widgetOne{
@@ -164,14 +214,40 @@ export default {
 
 .subtitle{
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
     display: relative;
-    color: black;
-    margin-left: 10px;
+    color: white;
     padding: 15px;
     font-size: 1.17em;
     font-weight: normal;
     font-stretch: normal;
+    text-align: center;
+    background-color:#34495e;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: solid 2px #2c3e50;
+    
+}
+
+.navButtonContainer{
+    align-self: center;
+    margin-top: auto;
+    margin-bottom: 25px;
+}
+
+button{
+    background-color: #34495e;
+    text-decoration: none;
+    padding: 10px;
+    color: whitesmoke;
+    border-radius: 5px; 
+    width: 150px;
+    height: 100%;
+    font-size: 12pt;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .2s;
 }
 
 

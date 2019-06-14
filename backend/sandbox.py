@@ -4,12 +4,7 @@ from bs4 import BeautifulSoup
 
 filename = './assets/files/Offsite Equipment List - VD1.0.docx'
 
-# if str(magLoop) == 'None':
-#     print('GEMC 22')
-# elif str(magLoop) == '<w:result w:val="1"/>':
-#     print('GEMC 313')
-# elif str(magLoop) == '<w:result w:val="2"/>':
-#     print('GEMC 136')
+
 
 def parseChecklist(checklist):
     # Open as XML
@@ -53,3 +48,19 @@ def parseChecklist(checklist):
     return assetList
                 
 print(parseChecklist(filename))
+
+
+def dropdownHandler(assetList):
+    for item in assetList:
+        if type(item['asset']) != str:
+            value = str(item['asset'])
+            
+            if item['table'] == 10 and item['row'] == 2:
+                if value == 'None':
+                    print('GEMC 22')
+                elif value == '<w:result w:val="1"/>':
+                    print('GEMC 313')
+                elif value == '<w:result w:val="2"/>':
+                    print('GEMC 136')
+
+dropdownHandler(parseChecklist(filename))
