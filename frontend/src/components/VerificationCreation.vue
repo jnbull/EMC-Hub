@@ -72,13 +72,22 @@ export default {
     }
 
     .subtitle{
-        color: black;
-        margin-left: 10px;
-        padding: 15px;
-        font-size: 1.17em;
-        font-weight: normal;
-        font-stretch: normal;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: relative;
+    color: white;
+    padding: 15px;
+    font-size: 1.17em;
+    font-weight: normal;
+    font-stretch: normal;
+    text-align: center;
+    background-color:#34495e;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: solid 2px #2c3e50;
+    
+}
 
     .optionButtonContainer{
         margin: auto auto 40px auto;

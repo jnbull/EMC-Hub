@@ -24,9 +24,9 @@
             </div>
 
             <div class = 'todoContainer'>
-                <div class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
+                <div v-on:click = 'todo.completed = !todo.completed' class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
                     <div class = 'todo checkContainer'>
-                        <input class = 'check' type="checkbox">
+                        <input v-model = 'todo.completed' class = 'check' type="checkbox">
                     </div>
                     <div class = 'todo'>{{todo.title}}</div>
                     <div class = 'todo'>{{todo.type}}</div>
@@ -129,7 +129,7 @@ export default {
     width: 175px;
     display: inline-block;
     padding: 10px;
-    border-left: lightgray 2px solid;
+    border-left: darkgrey 2px solid;
 }
 
 .checkContainer{
@@ -144,16 +144,23 @@ export default {
     margin-left: 4px;
 }
 .todoItem{
-    border-bottom: lightgray solid 2px;
+    border-bottom: darkgrey solid 2px;
 }
 
 .todoItem:hover{
     background-color: lightgray;
     cursor: pointer;
+    opacity: 0.8;
 }
 
 .completed{
-    background-color:#3bb78f;
+    background-color:lightgreen;
+    /* opacity: 0.8; */
+}
+
+.completed:hover{
+    background-color:lightgreen;
+    opacity: 0.8;
 }
 
 .sectionContainer{
