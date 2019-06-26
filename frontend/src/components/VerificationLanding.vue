@@ -18,8 +18,47 @@
                     My Verification List
                 </div>
                 
-                <div class = 'plusIconSml'>
+                <div v-on:click = 'addItem = !addItem, singleItem = false, offsite = false, searchItem = false' class = 'plusIconSml'>
                     <font-awesome-icon icon = 'plus'/>
+                </div>
+            </div>
+
+            <div v-if = 'addItem' class = 'addItemContainer'>
+                <div v-on:click = 'addSingleItem' class = 'addItemChoice'>Add Item</div>
+                <div v-on:click = 'addSearch' class = 'addItemChoice'>Search Database</div>
+                <label class = 'addItemChoice'>
+                    Upload Offsite List
+                    <input ref = 'file' type='file' v-on:change = 'handleFileUpload' class = 'addItemChoice'>
+                </label>
+            </div>
+
+            <div v-if= 'offsite' class = 'addContentContainer'>
+                <div>Filename: {{file.name}}</div>
+                <button class = 'addButton' v-on:click = 'submitFile'>Submit</button>
+                <!-- <button class = 'cancelButton' v-on:click = 'cancelOffsite'>Cancel</button> -->
+            </div>
+
+            <div v-if= 'singleItem' class = 'addContentContainer'>
+                <div>
+                    Category: 
+                    <select name = 'category' class = 'customSelect' v-model = 'addTodo.category'>
+                        <option disabled value="">Select: </option>
+                        <option value = 'Test Setup'>Test Setup</option>
+                        <option value = 'Individual Equipment'>Individual Equipment</option>
+                        <option value = 'Factors'>Factors</option>
+                    </select>
+                    ID#: <input type="text" v-model = 'addTodo.title'>
+                    Type: <input type="text" v-model = 'addTodo.type'>
+                    <button class= 'addButton' v-on:click = 'addEquipment'>Add</button>
+                </div>
+            </div>
+
+            <div v-if= 'searchItem' class = 'addContentContainer'>
+                <div>
+                    ID#: <input type="text" v-model = 'filters.id'>
+                    Type: <input type="text" v-model = 'filters.type_'>
+                    Manufacturer: <input type="text" v-model = 'filters.manufacturer'>
+                    <button class= 'addButton' v-on:click = 'searchEquipment'>Search</button>
                 </div>
             </div>
 
@@ -34,10 +73,9 @@
                 </div>
             </div>
 
-            <div class = 'navButtonContainer'>
-                <input v-on:change = 'handleFileUpload()' ref = 'file' type='file'>
-                <button v-on:click = 'submitFile()'>Verify Selected</button>
-            </div>
+            <!-- <div class = 'navButtonContainer'>
+                <button>Verify Selected</button>
+            </div> -->
         </div>
 
         <!-- Report Widget 2 -->
@@ -66,7 +104,23 @@ export default {
     name: 'VerificationLanding',
      data(){
         return {
+            addItem: false,
+            singleItem: false,
+            offsite: false,
+            searchItem: false,
+            // filename: '',
             file: '',
+            filters: {
+                id: '',
+                manufacturer: '',
+                type_: ''
+            },
+            addTodo: {
+                title: '',
+                category: '',
+                type: '',
+                completed: false
+            },
             todos: [
                 {
                 id: 1,
@@ -94,36 +148,106 @@ export default {
   },
   methods: {
       handleFileUpload(){
-          this.file = this.$refs.file.files[0];
+        this.file = this.$refs.file.files[0];
+        this.offsite = !this.offsite;
+        this.addItem = !this.addItem;
       },
       submitFile(){
-          let formData = new FormData();
-          formData.append('file', this.file);
-          axios.post('http://localhost:5000/submit/offsiteList',formData, {
-              headers:{
-                  'Content-Type': 'multipart/form-data'
-              }
-          })
-          .then(response => {this.addItem(response.data)})
+        let formData = new FormData();
+        formData.append('file', this.file);
+        axios.post('http://localhost:5000/submit/offsiteList',formData, {
+            headers:{
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+          .then(response => {this.addOffsite(response.data)})
       },
-      addItem(assetList){
-          const unique = [...new Set(assetList)]
-          for (const item of unique){
-              const newTodo = {
-                  id: '',
-                  category: 'Dummy',
-                  type: 'Dummy',
-                  title: item,
-                  completed: false
-              }
-              this.todos = [...this.todos, newTodo]
-          }
+      addOffsite(assetList){
+        const unique = [...new Set(assetList)]
+        for (const item of unique){
+            const newTodo = {
+                id: '',
+                category: 'Dummy',
+                type: 'Dummy',
+                title: item,
+                completed: false
+            }
+            this.todos = [...this.todos, newTodo]
+        }
+      },
+      addEquipment(){
+        const newTodo = {
+            id: this.todos[this.todos.length-1].id + 1,
+            title: 'GEMC ' + this.addTodo.title,
+            category: this.addTodo.category,
+            type: this.addTodo.type,
+            completed: false
+        }
+        this.todos = [...this.todos, newTodo]
+      },
+      addSingleItem(){
+          this.addItem = !this.addItem;
+          this.singleItem = !this.singleItem;
+      },
+      addSearch(){
+          this.addItem = !this.addItem;
+          this.searchItem = !this.searchItem;
+      },
+      searchEquipment(){
+          axios.post('http://localhost:5000/query/equipment',this.filters)
+          .then(response => {this.searchResult(response.data)})
+      },
+      searchResult(equipmentList){
+        for (const item of equipmentList){
+            const newTodo = {
+                id: item.id,
+                category: 'Individual Equipment',
+                type: item.type_,
+                title: 'GEMC ' + item.id,
+                completed: false
+            }
+            this.todos = [...this.todos, newTodo]
+        }
       }
   }
 }
 </script>
 
 <style scoped>
+
+input[type=file]{
+    display: none;
+}
+
+.todoContainer{
+    overflow-y: scroll;
+    /* margin-bottom: 20px; */
+    height: 100%
+}
+
+.addContentContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: darkgray solid 2px;
+    /* padding: 10px; */
+    background-color: lightgrey;
+    height: 50px;
+}
+
+.addItemContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: darkgray solid 2px;
+    /* padding: 10px; */
+    background-color: lightgrey;
+    height: 50px;
+}
+
+.addItemChoice:hover{
+    background-color: darkgray;
+}
 
 .todo{
     width: 175px;
@@ -287,6 +411,32 @@ button{
     text-align: center;
     cursor: pointer;
     transition: transform .2s;
+}
+
+.addButton{
+    color: black;
+    width: 120px;
+    height: 30px;
+    padding: 5px;
+    background-color: lightgreen;
+}
+
+.addItemChoice{
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+    /* background-color: #34495e; */
+    text-decoration: none;
+    /* padding: 10px; */
+    color: black;
+    /* border-radius: 5px;  */
+    height: 100%;
+    font-size: 12pt;
+    text-align: center;
+    cursor: pointer;
+    transition: transform .2s;
+    width: 33%;
+    margin: 0px;
 }
 
 

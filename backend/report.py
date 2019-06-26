@@ -33,6 +33,8 @@ from copy import deepcopy
 # output1 = './mainOutput.docx'
 
 # ----------------------------Class Definitions------------------------------
+
+
 class Report:
 
     """Used to create automated EMC reports based on test results.
@@ -102,6 +104,7 @@ class Report:
         for test in self.testList:
             test.docOutput()
 
+
 class Template:
 
     """Holds data relevant to a new EMC test report template.
@@ -152,7 +155,7 @@ class Template:
 
             if test in subdirList:
                 subdirList[:] = [test]
-        
+
             breadCrumbs = dirName.split('/')
 
             for dir in breadCrumbs:
@@ -161,13 +164,13 @@ class Template:
                 else:
                     DNU = False
 
-            if DNU == False:
+            if DNU is False:
                 # print('Found Directory: %s' % dirName)
                 for file in files:
                     filePath = dirName + os.sep + file
                     if filePath.endswith('.GIF'):
                         fileList.append(filePath)
-        
+
         return(fileList)
 
     def _getXLSX(self, test):
@@ -184,7 +187,7 @@ class Template:
 
             if test in subdirList:
                 subdirList[:] = [test]
-        
+
             breadCrumbs = dirName.split('/')
 
             for dir in breadCrumbs:
@@ -193,13 +196,13 @@ class Template:
                 else:
                     DNU = False
 
-            if DNU == False:
+            if DNU is False:
                 # print('Found Directory: %s' % dirName)
                 for file in files:
                     filePath = dirName + os.sep + file
                     if filePath.endswith('.xlsx'):
                         fileList.append(filePath)
-        
+
         return(fileList)
 
     def _removeEmptyRows(self, table):
@@ -296,11 +299,11 @@ class Template:
             row = 2
             firstCellValue = 0
             counter = 1
-            while firstCellValue != None:
+            while firstCellValue is not None:
                 peakList[counter] = dict()
                 for col in range(1, len(header) + 1):
                     cellValue = detectorFile.cell(column=col, row=row).value
-                    if cellValue == None:
+                    if cellValue is None:
                         break
                     else:
                         if col == 1 or col == 2:
@@ -352,6 +355,7 @@ class Template:
                 peakList[row][9] = '--'
                 peakList[row][11] = '--'
         return (peakList)
+
 
 class PLCE(Template):
 
@@ -437,7 +441,6 @@ class PLCE(Template):
         self.classHandler()
         self.equipmentList()
         self.doc.save(self.output)
-        
 
     def equipmentList(self):
         equipTable = self.doc.tables[-1]
@@ -454,8 +457,8 @@ class PLCE(Template):
                 for paragraph in equipTable.rows[2].cells[col].paragraphs:
                     for run in paragraph.runs:
                         run.font.highlight_color = WD_COLOR_INDEX.YELLOW
-                    
-        #LISN
+
+        # LISN
         if self.equipment['LISN'] == 'GEMC 302':
             for col in range(len(equipTable.rows[0].cells)):
                 for paragraph in equipTable.rows[3].cells[col].paragraphs:
@@ -559,17 +562,15 @@ class PLCE(Template):
             for row in range(5, len(table.rows)):
                 colCounter = 0
                 for col in range(len(table.rows[0].cells)):
-                        # print(table.rows[row].cells[col].text)
-
-                        try:
-                            colCounter += 1
-                            tableText = table.rows[row].cells[col]
-                            tableText.text = str(peakList[rowCounter][colCounter])
-                            tableText.paragraphs[0].runs[0].font.name = 'Calibri'
-                            tableText.paragraphs[0].runs[0].font.size = Pt(11)
-                            tableText.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
-                        except KeyError:
-                            continue
+                    try:
+                        colCounter += 1
+                        tableText = table.rows[row].cells[col]
+                        tableText.text = str(peakList[rowCounter][colCounter])
+                        tableText.paragraphs[0].runs[0].font.name = 'Calibri'
+                        tableText.paragraphs[0].runs[0].font.size = Pt(11)
+                        tableText.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    except KeyError:
+                        continue
 
                 rowCounter += 1
 
@@ -636,7 +637,7 @@ class PLCE(Template):
                     else:
                         valueValid = True
 
-                if valueValid == True:
+                if valueValid is True:
                     continue
             except KeyError:
                 continue
@@ -710,6 +711,7 @@ class PLCE(Template):
 
         row2.cells[4].paragraphs[0].runs[0].font.bold = True
 
+
 class RE(Template):
 
     def __init__(self, productName, companyName, productClass, dataLocation, tempLocation):
@@ -719,9 +721,10 @@ class RE(Template):
         self.filesGIF = []
         self.filesXLSX = []
 
+
 class File():
 
-    def __init__(self, name, value, type, voltage, line, frequency = None, polarity = None):
+    def __init__(self, name, value, type, voltage, line, frequency=None, polarity=None):
         self.name = name
         self.value = value
         self.type = type
@@ -729,12 +732,3 @@ class File():
         self.frequency = frequency
         self.line = line
         self.polarity = polarity
-
-
-
-# def main():
-
-#     report = Report(productName1, companyName1, productClass1, setup1, data1, temp1, output1, PLCE = PLCE)
-#     report.reportOutput()
-
-# main()
