@@ -44,6 +44,14 @@
 <script>
 export default {
     name: 'ReportCreation',
+    methods:{
+        sendPageName(){
+            this.$emit('pageName', 'Create Report')
+        },
+    },
+    beforeMount(){
+      this.sendPageName()
+    }
 }
 </script>
 

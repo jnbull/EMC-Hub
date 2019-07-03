@@ -36,7 +36,15 @@
 
 <script>
 export default {
-    name: 'ReportLanding'
+    name: 'ReportLanding',
+    methods:{
+        sendPageName(){
+            this.$emit('pageName', 'Reports')
+        },
+    },
+    beforeMount(){
+      this.sendPageName()
+    }
 }
 </script>
 

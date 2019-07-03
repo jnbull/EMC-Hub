@@ -78,7 +78,15 @@
 
 <script>
 export default {
-    name: 'Home'
+    name: 'Home',
+    methods:{
+        sendPageName(){
+            this.$emit('pageName', 'Home')
+        }
+    },
+    beforeMount(){
+        this.sendPageName()
+    }
 }
 </script>
 

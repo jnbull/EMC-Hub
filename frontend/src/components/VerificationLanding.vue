@@ -10,7 +10,7 @@
         <!-- Report Widget 1 -->
         <div class = 'colContainer widgetOne'>
             <div class = 'subtitle'>
-                <div class = 'barsIconSml'>
+                <div v-on:click = 'addItem = !addItem, singleItem = false, offsite = false, searchItem = false' class = 'barsIconSml'>
                     <font-awesome-icon icon = 'bars'/>
                 </div>
 
@@ -18,7 +18,7 @@
                     My Verification List
                 </div>
                 
-                <div v-on:click = 'addItem = !addItem, singleItem = false, offsite = false, searchItem = false' class = 'plusIconSml'>
+                <div  class = 'plusIconSml'>
                     <font-awesome-icon icon = 'plus'/>
                 </div>
             </div>
@@ -45,7 +45,6 @@
                         <option disabled value="">Select: </option>
                         <option value = 'Test Setup'>Test Setup</option>
                         <option value = 'Individual Equipment'>Individual Equipment</option>
-                        <option value = 'Factors'>Factors</option>
                     </select>
                     ID#: <input type="text" v-model = 'addTodo.title'>
                     Type: <input type="text" v-model = 'addTodo.type'>
@@ -147,6 +146,9 @@ export default {
         }
   },
   methods: {
+      sendPageName(){
+        this.$emit('pageName', 'Verifications')
+    },
       handleFileUpload(){
         this.file = this.$refs.file.files[0];
         this.offsite = !this.offsite;
@@ -209,6 +211,9 @@ export default {
             this.todos = [...this.todos, newTodo]
         }
       }
+  },
+  beforeMount(){
+      this.sendPageName()
   }
 }
 </script>

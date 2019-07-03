@@ -339,7 +339,13 @@ export default {
             else{
                 console.log('Failed');
             }
-        }
+        },
+        sendPageName(){
+            this.$emit('pageName', 'EMC Report')
+        },
+    },
+    beforeMount(){
+        this.sendPageName()
     }
 }
 </script>

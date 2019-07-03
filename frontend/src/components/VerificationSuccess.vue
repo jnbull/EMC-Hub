@@ -53,7 +53,13 @@ export default {
         fileOpen(e){
             e.preventDefault()
             axios.post('http://localhost:5000/submit/fileopen')
-        }
+        },
+        sendPageName(){
+            this.$emit('pageName', 'Verification Successful')
+        },
+    },
+    beforeMount(){
+        this.sendPageName()
     }
 }
 </script>

@@ -44,6 +44,14 @@
 <script>
 export default {
     name: 'VerificationCreation',
+    methods:{
+        sendPageName(){
+            this.$emit('pageName', 'Create Verification')
+        },
+    },
+    beforeMount(){
+      this.sendPageName()
+    }
 }
 </script>
 

@@ -720,8 +720,15 @@ export default {
             this.windows[4].peak10 = (this.windows[3].formData[0].content * 0.10) + 'V'; 
             this.windows[4].peak90 = (this.windows[3].formData[0].content * 0.90) + 'V';
             this.windows[5].peak50 = (this.windows[3].formData[0].content * 0.50) + 'V';
-        }
+        },
 
+        sendPageName(){
+            this.$emit('pageName', 'EFT Verification')
+        },
+
+    },
+    beforeMount(){
+      this.sendPageName()
     }
 }
 </script>

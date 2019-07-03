@@ -3,7 +3,7 @@
 
     <!-- Top Navigation Bar -->
     <div>
-      <Topnav/>
+      <Topnav :pageName = 'pageName'/>
     </div>
 
     <!-- Side Navigation Bar -->
@@ -14,7 +14,7 @@
     <!-- Page View -->
     <div>
       <transition name = 'show'>
-        <router-view></router-view>
+        <router-view @pageName = 'setPageName'></router-view>
       </transition>
     </div>
     
@@ -31,6 +31,17 @@ export default {
   components: {
     Topnav,
     Sidenav
+  },
+  data(){
+    return {
+      pageName: ''
+    }
+  },
+  methods: {
+    setPageName(pageName){
+      this.pageName = pageName
+      // console.log(this.pageName)
+    }
   },
 }
 </script>

@@ -42,6 +42,14 @@
 <script>
 export default {
     name: 'VerificationTests',
+    methods:{
+        sendPageName(){
+            this.$emit('pageName', 'Test Setup Verifications')
+        },
+    },
+    beforeMount(){
+      this.sendPageName()
+    }
 }
 </script>
 
