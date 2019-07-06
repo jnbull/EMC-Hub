@@ -37,6 +37,15 @@ class Request(Base):
     receiver_id = Column('receiverID', Integer, ForeignKey('users.id'))
 
 
+class Todos(Base):
+    __tablename__ = 'todos'
+
+    id = Column('id', Integer, primary_key=True)
+    name = Column('name', String, unique=True)
+    category = Column('category', String)
+    type_ = Column('type', String)
+
+
 # Equipment DB Setup
 engine = create_engine('sqlite:///tuv.db')
 Base.metadata.create_all(bind=engine)
@@ -47,6 +56,22 @@ Session = sessionmaker(bind=engine)
 # Base.metadata.create_all(bind=engine2)
 # Session2 = sessionmaker(bind=engine2)
 
+
+def addTodo(name, category, type_):
+
+    session = Session()
+
+    todo = Todos()
+    todo.name = name
+    todo.category = category
+    todo.type_ = type_
+
+    session.add(todo)
+    session.commit()
+
+    session.close()
+
+    return(todo)
 
 def addUser(name, initial, email, admin):
 

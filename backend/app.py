@@ -3,7 +3,7 @@ from flask_cors import CORS
 from verify import addEFTRecord, createForm
 from report import Report, PLCE
 from offsiteList import parseChecklist, dropdownHandler
-from models import queryEquipment
+from models import queryEquipment, addTodo, addUser, queryUser, removeUser, addRequest
 from werkzeug import secure_filename
 import subprocess
 import os
@@ -113,6 +113,27 @@ def getEquipment():
         print(filters)
         result = queryEquipment(filters)
         return jsonify(result)
+
+# Add Todo List Item to Database
+@app.route('/add/todo/equipment', methods=['POST'])
+def addTodoItem():
+
+    # Axios request will be post
+    if request.method == 'POST':
+        # Todo object passed from Vue via Axios
+        todo = request.get_json()
+        print(todo)
+
+        # Set new Todo db entry params
+        name = todo['id']
+        category = 'Individual Test Equipment'
+        type_ = todo['type_']
+
+        # Create Todo in db. This will be a new Todo object
+        addTodo(name, category, type_)
+
+        # Return the Todo object to Vue
+        return 'OK'
 
 
 # Offsite List Upload

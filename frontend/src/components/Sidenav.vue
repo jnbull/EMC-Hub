@@ -3,21 +3,21 @@
     <nav>
         <!-- Report Section Link -->
         <router-link to = '/reports'>
-            <div class = 'sideNavButton'>
+            <div v-bind:class = "{'active': pageName == 'Reports'}" class = 'sideNavButton'>
                 <i><font-awesome-icon icon = 'file-alt'/></i>
             </div>
         </router-link>
 
         <!-- Verifications Section Link -->
         <router-link to = '/verifications'>
-            <div class = 'sideNavButton'>
+            <div v-bind:class = "{'active': pageName == 'Verifications'}" class = 'sideNavButton'>
                 <i><font-awesome-icon icon = 'clipboard-check'/></i>
             </div>
         </router-link>
 
         <!-- Environmental Conditions Section Link -->
         <router-link to = '/environmental'>
-            <div class = 'sideNavButton'>
+            <div v-bind:class = "{'active': pageName == 'Environmental Conditions'}" class = 'sideNavButton verifications'>
                 <i><font-awesome-icon icon = 'thermometer-half'/></i>
             </div>
         </router-link>
@@ -43,9 +43,10 @@ export default {
     name: 'Sidenav',
     // data() {
     //     return {
-    //         fileOpen = true;
+    
     //     }
     // },
+    props: ['pageName'],
     methods: {
         fileOpen(e){
             e.preventDefault()
@@ -79,6 +80,11 @@ nav{
     height: 60px;
     color: #ececec;
     font-size: 35px;
+}
+
+.active{
+    background-color: #ececec;
+    color:#999;
 }
 
 .bottomButton{

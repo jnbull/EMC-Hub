@@ -8,7 +8,7 @@
 
     <!-- Side Navigation Bar -->
     <div>
-      <Sidenav/>
+      <Sidenav :pageName = 'pageName'/>
     </div>
 
     <!-- Page View -->

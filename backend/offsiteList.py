@@ -43,7 +43,8 @@ def parseChecklist(checklist):
     
     # Return list of assets to be verified
     return assetList
-                
+
+
 def dropdownHandler(assetList):
     finalsList = []
     for item in assetList:
@@ -55,98 +56,98 @@ def dropdownHandler(assetList):
                 # Item 1 - Signal Generator
                 if item['row'] == 5:
                     if value == 'None':
-                        finalsList.append('GEMC 236')
+                        finalsList.append('236')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 238')
+                        finalsList.append('238')
 
             # Table 3 - Conducted Emissions
             if item['table'] == 3:
                 # Item 1 - Spectrum Analyzer
                 if item['row'] == 2:
                     if value == 'None':
-                        finalsList.append('GEMC 160')
+                        finalsList.append('160')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 198')
+                        finalsList.append('198')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 232')
+                        finalsList.append('232')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 234')
+                        finalsList.append('234')
 
                 # Item 1 - 10dB Attenuator
                 if item['row'] == 7:
                     if value == 'None':
-                        finalsList.append('GEMC 322')
+                        finalsList.append('322')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 323')
+                        finalsList.append('323')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 223')
+                        finalsList.append('223')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 224')
+                        finalsList.append('224')
                     elif value == '<w:result w:val="4"/>':
-                        finalsList.append('GEMC 225')
+                        finalsList.append('225')
                     elif value == '<w:result w:val="5"/>':
-                        finalsList.append('GEMC 226')
+                        finalsList.append('226')
                     elif value == '<w:result w:val="6"/>':
-                        finalsList.append('GEMC 42')
+                        finalsList.append('42')
 
             # Table 4 - Radiated Emissions
             if item['table'] == 4:
                 # Item 1 - Spectrum Analyzer
                 if item['row'] == 2:
                     if value == 'None':
-                        finalsList.append('GEMC 160')
+                        finalsList.append('160')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 198')
+                        finalsList.append('198')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 232')
+                        finalsList.append('232')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 234')
+                        finalsList.append('234')
                 
                 # Item 2 - Preamplifier
                 if item['row'] == 3:
                     if value == 'None':
-                        finalsList.append('GEMC 168')
+                        finalsList.append('168')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 221')
+                        finalsList.append('221')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 243')
+                        finalsList.append('243')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 244')
+                        finalsList.append('244')
                     elif value == '<w:result w:val="4"/>':
-                        finalsList.append('GEMC 301')
+                        finalsList.append('301')
 
                 # Item 3 - BiLog Antenna
                 if item['row'] == 4:
                     if value == 'None':
-                        finalsList.append('GEMC 8')
+                        finalsList.append('8')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 137')
+                        finalsList.append('137')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 201')
+                        finalsList.append('201')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 231')
+                        finalsList.append('231')
 
                 # Item 4 - Horn Antenna
                 if item['row'] == 5:
                     if value == 'None':
-                        finalsList.append('GEMC 214')
+                        finalsList.append('214')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 235')
+                        finalsList.append('235')
                 
                 # Item 5 - 6dB Attenuator
                 if item['row'] == 6:
                     if value == 'None':
-                        finalsList.append('GEMC 286')
+                        finalsList.append('286')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 287')
+                        finalsList.append('287')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 288')
+                        finalsList.append('288')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 289')
+                        finalsList.append('289')
                     elif value == '<w:result w:val="4"/>':
-                        finalsList.append('GEMC 290')
+                        finalsList.append('290')
                     elif value == '<w:result w:val="5"/>':
-                        finalsList.append('GEMC 41')
+                        finalsList.append('41')
                  
 
             # Table 5 - ESD
@@ -154,90 +155,90 @@ def dropdownHandler(assetList):
                 # Item 1 - ESD Gun
                 if item['row'] == 2:
                     if value == 'None':
-                        finalsList.append('GEMC 1')
+                        finalsList.append('1')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 130')
+                        finalsList.append('130')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 299')
+                        finalsList.append('299')
 
             # Table 6 - Conducted Immunity
             if item['table'] == 6:
                 # Item 1 - Signal Generator
                 if item['row'] == 2:
                     if value == 'None':
-                        finalsList.append('GEMC 236')
+                        finalsList.append('236')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 238')
+                        finalsList.append('238')
 
                 # Item 2 - LF Amplifier
                 if item['row'] == 3:
                     if value == 'None':
-                        finalsList.append('GEMC 298')
+                        finalsList.append('298')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 192')
+                        finalsList.append('192')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 179')
+                        finalsList.append('179')
                 
                 # Item 3 - HF Amplifier
                 if item['row'] == 4:
                     if value == 'None':
-                        finalsList.append('GEMC 263')
+                        finalsList.append('263')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 185')
+                        finalsList.append('185')
 
                 # Item 4 - BiLog Antenna
                 if item['row'] == 5:
                     if value == 'None':
-                        finalsList.append('GEMC 8')
+                        finalsList.append('8')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 137')
+                        finalsList.append('137')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 201')
+                        finalsList.append('201')
                     elif value == '<w:result w:val="3"/>':
-                        finalsList.append('GEMC 231')
+                        finalsList.append('231')
 
                 # Item 5 - Horn Antenna
                 if item['row'] == 6:
                     if value == 'None':
-                        finalsList.append('GEMC 214')
+                        finalsList.append('214')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 235')
+                        finalsList.append('235')
             
             # Table 9 - Conducted Immunity
             if item['table'] == 9:
                 # Item 1 - Signal Generator
                 if item['row'] == 2:
                     if value == 'None':
-                        finalsList.append('GEMC 155')
+                        finalsList.append('155')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 236')
+                        finalsList.append('236')
                     elif value == '<w:result w:val="2"/>':
-                        finalsList.append('GEMC 6330')
+                        finalsList.append('6330')
 
                 # Item 2 - Amplifier
                 if item['row'] == 3:
                     if value == 'None':
-                        finalsList.append('GEMC 14')
+                        finalsList.append('14')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 266')
+                        finalsList.append('266')
 
                 # Item 3 - BCI
                 if item['row'] == 4:
                     if value == 'None':
-                        finalsList.append('GEMC 20')
+                        finalsList.append('20')
                     elif value == '<w:result w:val="1"/>':
-                        finalsList.append('GEMC 294')
+                        finalsList.append('294')
 
             # Table 10 - Magnetic Immunity
             if item['table'] == 10 and item['row'] == 2:
                 if value == 'None':
-                    finalsList.append('GEMC 22')
+                    finalsList.append('22')
                 elif value == '<w:result w:val="1"/>':
-                    finalsList.append('GEMC 313')
+                    finalsList.append('313')
                 elif value == '<w:result w:val="2"/>':
-                    finalsList.append('GEMC 136')
+                    finalsList.append('136')
 
         else:
-            finalsList.append(item['asset'])
+            finalsList.append(item['asset'].split()[1])
     
     return(finalsList)

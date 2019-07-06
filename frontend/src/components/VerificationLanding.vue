@@ -18,7 +18,7 @@
                     My Verification List
                 </div>
                 
-                <div  class = 'plusIconSml'>
+                <div v-on:click = 'addSingleItem' class = 'plusIconSml'>
                     <font-awesome-icon icon = 'plus'/>
                 </div>
             </div>
@@ -40,15 +40,8 @@
 
             <div v-if= 'singleItem' class = 'addContentContainer'>
                 <div>
-                    Category: 
-                    <select name = 'category' class = 'customSelect' v-model = 'addTodo.category'>
-                        <option disabled value="">Select: </option>
-                        <option value = 'Test Setup'>Test Setup</option>
-                        <option value = 'Individual Equipment'>Individual Equipment</option>
-                    </select>
-                    ID#: <input type="text" v-model = 'addTodo.title'>
-                    Type: <input type="text" v-model = 'addTodo.type'>
-                    <button class= 'addButton' v-on:click = 'addEquipment'>Add</button>
+                    <input type="text" placeholder="Add Item by GEMC ID" v-model = 'addTodo.id' class = 'textField'>
+                    <button class= 'addButton' v-on:click = 'addEquipmentTodo(addTodo.id)'>Add</button>
                 </div>
             </div>
 
@@ -61,16 +54,40 @@
                 </div>
             </div>
 
-            <div class = 'todoContainer'>
-                <div v-on:click = 'todo.completed = !todo.completed' class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
-                    <div class = 'todo checkContainer'>
-                        <input v-model = 'todo.completed' class = 'check' type="checkbox">
-                    </div>
-                    <div class = 'todo'>{{todo.title}}</div>
-                    <div class = 'todo'>{{todo.type}}</div>
-                    <div class = 'todo'>{{todo.category}}</div>
+            <div class = 'listContainer'>
+                <div class='listTitle'>
+                    Search Results
                 </div>
+
+                <div class = 'todoContainer'>
+                    <div v-on:click = 'todo.completed = !todo.completed' class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
+                        <div class = 'todo checkContainer'>
+                            <input v-model = 'todo.completed' class = 'check' type="checkbox">
+                        </div>
+                        <div class = 'todo'></div>
+                        <div class = 'todo'>{{todo.type}}</div>
+                        <div class = 'todo'>{{todo.category}}</div>
+                    </div>
+                </div>
+
+                <div class='listTitle'>
+                    Verification List
+                </div>
+
+                <div class = 'todoContainer'>
+                    <div v-on:click = 'todo.completed = !todo.completed' class = 'todoItem' v-bind:class = "{'completed':todo.completed}" v-bind:key = "todo.id" v-for = "todo in todos">
+                        <div class = 'todo checkContainer'>
+                            <input v-model = 'todo.completed' class = 'check' type="checkbox">
+                        </div>
+                        <div class = 'todo'>{{todo.title}}</div>
+                        <div class = 'todo'>{{todo.type}}</div>
+                        <div class = 'todo'>{{todo.category}}</div>
+                    </div>
+                </div>
+
             </div>
+
+          
 
             <!-- <div class = 'navButtonContainer'>
                 <button>Verify Selected</button>
@@ -115,11 +132,11 @@ export default {
                 type_: ''
             },
             addTodo: {
-                title: '',
+                id: '',
                 category: '',
                 type: '',
-                completed: false
             },
+            searchResult: '',
             todos: [
                 {
                 id: 1,
@@ -164,31 +181,21 @@ export default {
         })
           .then(response => {this.addOffsite(response.data)})
       },
-      addOffsite(assetList){
-        const unique = [...new Set(assetList)]
-        for (const item of unique){
-            const newTodo = {
-                id: '',
-                category: 'Dummy',
-                type: 'Dummy',
-                title: item,
-                completed: false
-            }
-            this.todos = [...this.todos, newTodo]
-        }
-      },
-      addEquipment(){
-        const newTodo = {
-            id: this.todos[this.todos.length-1].id + 1,
-            title: 'GEMC ' + this.addTodo.title,
-            category: this.addTodo.category,
-            type: this.addTodo.type,
-            completed: false
-        }
-        this.todos = [...this.todos, newTodo]
-      },
+    //   addOffsite(assetList){
+    //     const unique = [...new Set(assetList)]
+    //     for (const item of unique){
+    //         const newTodo = {
+    //             id: '',
+    //             category: 'Dummy',
+    //             type: 'Dummy',
+    //             title: item,
+    //             completed: false
+    //         }
+    //         this.todos = [...this.todos, newTodo]
+    //     }
+    //   },
       addSingleItem(){
-          this.addItem = !this.addItem;
+        //   this.addItem = !this.addItem;
           this.singleItem = !this.singleItem;
       },
       addSearch(){
@@ -197,19 +204,14 @@ export default {
       },
       searchEquipment(){
           axios.post('http://localhost:5000/query/equipment',this.filters)
-          .then(response => {this.searchResult(response.data)})
+          .then(response => {this.searchResult = response.data[0]})
+          console.log(this.searchResult)
       },
-      searchResult(equipmentList){
-        for (const item of equipmentList){
-            const newTodo = {
-                id: item.id,
-                category: 'Individual Equipment',
-                type: item.type_,
-                title: 'GEMC ' + item.id,
-                completed: false
-            }
-            this.todos = [...this.todos, newTodo]
-        }
+      addEquipmentTodo(id){
+          this.filters.id = id
+          this.searchEquipment()
+          axios.post('http://localhost:5000/add/todo/equipment', this.searchResult)
+          .then(response => {console.log('Todo added')})
       }
   },
   beforeMount(){
@@ -220,14 +222,31 @@ export default {
 
 <style scoped>
 
+.textField{
+    height: 100%;
+    width: 500px;
+    padding: 5px;
+    margin: 0px 15px;
+}
+
+.textField::placeholder{
+    color: black;
+    font-size: 9pt;
+}
+
+.listTitle{
+    width: 100%;
+    font-size: 11pt;
+    background-color: lightgrey;
+    padding:3px 3px 3px 10px;
+}
 input[type=file]{
     display: none;
 }
 
-.todoContainer{
+.listContainer{
+    height: 100%;
     overflow-y: scroll;
-    /* margin-bottom: 20px; */
-    height: 100%
 }
 
 .addContentContainer{
@@ -235,8 +254,9 @@ input[type=file]{
     justify-content: center;
     align-items: center;
     border-bottom: darkgray solid 2px;
-    /* padding: 10px; */
-    background-color: lightgrey;
+    padding: 5px;
+    color: whitesmoke;
+    background-color:#34495e;
     height: 50px;
 }
 
@@ -394,7 +414,7 @@ input[type=file]{
     background-color:#34495e;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    border-bottom: solid 2px #2c3e50;
+    /* border-bottom: solid 2px #2c3e50; */
     
 }
 
